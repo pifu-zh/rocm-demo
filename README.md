@@ -1,9 +1,29 @@
-# rocm-demo
+# rocm-demo — AITER Lab
 
 Design harvest from [ROCm/aiter](https://github.com/ROCm/aiter) — the
 borrowable designs of an inference operator library, extracted as
 self-contained, verified demos. Part of the cuda-oxide adapt-rocm research
 line (Rust GPU toolchain on RX 6950 XT / gfx1030, RDNA2).
+
+This repo doubles as the **AITER Lab** (charter 2026-11-13): systematic
+dissection of aiter's algorithms / compiler machinery / hardware mechanisms
+/ software-emulation paths, re-implemented as independent minimal demos
+under `demos/<category>/<concept>/` with per-demo build, tests, inspection
+artifacts, hardware matrix and recorded verification levels
+(SOURCE_VERIFIED → REFERENCE_PASS → STATIC_ANALYSIS_PASS → COMPILE_PASS →
+HARDWARE_PASS → PERFORMANCE_MEASURED).
+
+Knowledge map (Milestone 1, aiter @ `1eab5ae12`):
+
+- `docs/SOURCE_INDEX.md` — source/technique entry index
+- `docs/TECHNIQUE_CATALOG.md` — curated technique entries + existing-demo
+  verification levels
+- `docs/ARCH_MATRIX.md` — arch × capability matrix (aiter evidence + lab
+  measurements)
+- `docs/BACKEND_MATRIX.md` — backend relationships & selection logic
+- `docs/DEPENDENCY_GRAPH.md` — module dependencies & lab cut-points
+- `docs/EMULATION_CATALOG.md` — software-emulation/fallback catalog
+  (SIM / LOWER / RT-FB / DISPATCH / ALG classification)
 
 Three layers:
 
