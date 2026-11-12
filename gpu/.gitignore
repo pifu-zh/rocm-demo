@@ -1,0 +1,6 @@
+# Build artifacts of the gpu demos (built inside the container by run_gfx1030.sh)
+soft_fp8
+soft_fp4
+soft_tma
+toolchain
+soft_tma_pipeline.co

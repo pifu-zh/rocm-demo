@@ -1,67 +1,96 @@
 # rocm-demo
 
-CPU reference implementations of algorithm cores extracted from
-[ROCm/aiter](https://github.com/ROCm/aiter) — the parts of an inference
-operator library that are pure index/float logic with no CDNA-specific
-hardware dependency, pinned as deterministic host code with unit tests.
+Design harvest from [ROCm/aiter](https://github.com/ROCm/aiter) — the
+borrowable designs of an inference operator library, extracted as
+self-contained, verified demos. Part of the cuda-oxide adapt-rocm research
+line (Rust GPU toolchain on RX 6950 XT / gfx1030, RDNA2).
 
-Part of the cuda-oxide adapt-rocm research line (Rust GPU toolchain on
-RX 6950 XT / gfx1030, RDNA2). aiter's data-movement line (soft TMA:
-`s_clause` batching + `vmcnt(N)` partial-drain software pipelining) was
-already extracted and closed elsewhere; this repo harvests the next line:
-the **MoE scheduling chain** and **per-token-group quantization**. These
-make good GPU-port candidates on gfx1030 — histogram / prefix-scan /
-scatter exercise atomics, LDS and scans — and the unit tests here are the
-host-side independent reference such ports need.
+Three layers:
 
-## Layout
+- **core/** — pure-CPU deterministic reference cores (`aiter_ref`):
+  algorithm pieces with no hardware dependency, pinned as host C++20 with
+  unit tests. Build: CMake >= 3.16, nothing else. These are also the
+  host-side independent references future GPU ports need.
+- **design/** — host-side engineering-pattern demos (`aiter_design`):
+  aiter's runtime machinery (JIT compile cache, per-op dispatch) reduced to
+  minimal C++17 libraries with behavioral tests. POSIX-only.
+- **gpu/** — HIP process demos for gfx1030 (soft fp8/fp4 math, the soft-TMA
+  software pipeline as hand-written ISA, compiler-toolchain interfaces).
+  No ROCm on the host: build & run inside the container, see `gpu/README.md`.
 
-- `include/aiter_ref/`, `src/`, `tests/` — the C++ reference library
-  (`aiter_ref`) and its unit tests, built and run by CMake/CTest.
+Upstream pin: aiter @ `1eab5ae12c93af3c8c660202d9a413f637c2f011`
+(shallow clone, 2026-11-09). aiter's MIT license text:
+`LICENSES/MIT.txt`. New glue (tests, harness, build files, design
+reductions): Apache-2.0. Upstream licenses preserved per file.
 
-| Module | Upstream source (aiter @ 1eab5ae12) | License |
+## core/ modules
+
+| Module | Upstream source (aiter @ 1eab5ae12) | License | Line |
+|---|---|---|---|
+| `moe_align` | `csrc/kernels/moe_align_block_size_kernels.cu` | Apache-2.0 (© AMD, © vLLM team) | 1 |
+| `topk_softmax` | `csrc/kernels/topk_softmax_kernels.cu` (`moeSoftmax`+`moeTopK`), `csrc/include/hip_reduce.h` | MIT (© AMD) | 1 |
+| `group_quant` | `csrc/kernels/quant_kernels.cu` (continuous fp32-scale path), `csrc/include/quant_amax_floor.h` | MIT (© AMD) | 1 |
+| `fp8` | cuda-oxide `crates/cuda-device/src/fp8.rs` (on-card-validated codec) | Apache-2.0 (© NVIDIA) | 1 |
+| `moe_fused_gate` | `csrc/kernels/moe_fused_gate.cu` (grouped biased routing; ArgMin/ArgMax tie-break from `hip_reduce.h`) | Apache-2.0 (© AMD, adapted from sglang) | 2 |
+| `sample` | `csrc/kernels/sample_kernels.cu` (greedy/Philox/outer-exponential sampling) + bit-exact `rocrand_device::philox4x32_10_engine` port | MIT (© AMD, © D. E. Shaw Research) | 2 |
+| `rope` | `csrc/kernels/rope/rope_common.h` + general_{1c,2c}_cached/uncached fwd family | MIT (© AMD) | 2 |
+| `kv_cache` | `csrc/kernels/cache_kernels.cu` → `reshape_and_cache_flash_kernel` (block-table KV scatter) | Apache-2.0 (© vLLM team, © AMD) | 2 |
+| `hadamard_quant` | `csrc/kernels/dsv4_rotate_quant.cu` (row Hadamard butterfly + fp4/fp8 group quant), `csrc/include/quant.h` hadamard_rotate | MIT (© AMD) | 2 |
+| `gdn_state` | `csrc/kernels/chunk_gated_delta_rule_fwd_h.cu` (inter-chunk GDN state recurrence) | MIT (© AMD) | 2 |
+
+Round-1 modules (line 1) harvest the MoE scheduling chain and per-token
+group quantization. Round-2 modules (line 2) harvest the routing, sampling,
+positional-encoding, KV-cache, quantization-rotation and linear-attention
+state lines. Semantics, pinned quirks and documented scope exclusions live
+in each header (`include/aiter_ref/*.hpp`); every module's tests validate
+against an independent reference (double-precision, brute-force codec, or
+sort-based reformulation), never against itself.
+
+Highlights pinned by the round-2 tests:
+
+- `moe_fused_gate`: value-first/lower-key tie-breaks make the device DPP
+  reduction tree order-independent; pad rows write -1/0.0 on routed slots
+  but still write shared-expert slots (upstream quirk).
+- `sample`: Philox engine bit-exact against vectors generated from ROCm
+  7.2's hiprand headers; in-kernel sampling and noise-decoupled sampling
+  pick identical tokens for the same (seed, offset); the exponential
+  transform's u>=1-2^-24 clamp is sign-flipped vs PyTorch (pinned as-is).
+- `hadamard_quant`: butterfly == naive Hadamard matmul; the rotate-vs-
+  direct quantization trade-off is measured and pinned BOTH ways (spike
+  rows win ~3x MSE, smooth rows lose).
+- `gdn_state`: chunked recurrence matches a double-precision reference
+  with identical quantization points (worst error 0.1% of the
+  accumulation bound); snapshots quantize at bf16, gated values quantize
+  at bf16, the decay applies to H before the delta adds.
+
+## design/ demos
+
+| Demo | Upstream source | Designs demonstrated |
 |---|---|---|
-| `moe_align` | `csrc/kernels/moe_align_block_size_kernels.cu` | Apache-2.0 (© AMD, © vLLM team) |
-| `topk_softmax` | `csrc/kernels/topk_softmax_kernels.cu` (`moeSoftmax`+`moeTopK`), `csrc/include/hip_reduce.h` | MIT (© AMD) |
-| `group_quant` | `csrc/kernels/quant_kernels.cu` (continuous fp32-scale path), `csrc/include/quant_amax_floor.h` | MIT (© AMD) |
-| `fp8` | cuda-oxide `crates/cuda-device/src/fp8.rs` (on-card-validated codec) | Apache-2.0 (© NVIDIA) |
+| `jit_cache` | `aiter/jit/core.py`, `aiter/jit/utils/{jit_cache,file_baton}.py` | content-addressed cache key; identity sidecar; temp+rename atomic publish; FileBaton cross-process lock with dead-pid stale detection & break-and-redo |
+| `dispatch` | `aiter/fused_moe_registry.py`, `csrc/include/aiter_dispatch.h` | name registry with duplicate rejection; arch-tiered resolution (specialized → generic → fallback); lazy "module:attr" binding with cache; `impl__<name>__<config>` kernel-name codec |
 
-New glue code (tests, harness, build files): Apache-2.0. Upstream licenses
-are preserved per file (`LICENSES/MIT.txt` for the MIT files).
+`jit_cache`'s two-process test proves the single-builder guarantee (racing
+processes on one key: exactly one compiles, the loser hits the cache) and
+that a crashed holder's lock is broken and its work redone.
 
-## Semantics pinned by the tests
+## gpu/ demos
 
-- **`moe_align`**: histogram → block-count prefix sum → per-block metadata
-  (`token_nums` counts down by `block_size`) → scatter. On the device the
-  scatter uses `atomicAdd` cursors, so per-expert token order is
-  nondeterministic; this port is ascending-deterministic. On-card ports
-  must be compared per-segment as multisets, never element-wise.
-- **`topk_softmax`**: stable softmax; iterative-argmax top-k with
-  lower-expert-index tie-break; optional renorm (skipped on exactly-zero
-  sum); out-of-range experts report the sentinel `num_experts`. Pinned
-  upstream quirk: for `start_expert > 0` the exclusion loop compares stored
-  local ids against global indices, so nothing is excluded — one expert can
-  fill every slot (see the quirk test). Other kernel variants in the same
-  upstream file were not checked.
-- **`group_quant`**: `amax = max(1e-10, max |x|)`, `scale = amax / qmax`
-  stored as the dequant scale, quantize via the float reciprocal with
-  round-to-nearest-even + clamp (fp8 saturates `.satfinite`). fp8
-  quantization is verified against a brute-force 256-way nearest-value
-  reference, including the sign-preserving ±0 tie.
-- **`fp8`**: E4M3FN codec (no infinities, `0x7F`/`0xFF` = NaN, max finite
-  448), 256/256 byte round trip + boundary/tie checks.
+See `gpu/README.md` (container build line, lineage, measured numbers, and
+the round's empirical findings — among them a real `__builtin_amdgcn_raw_ptr_buffer_load_lds`
+miscompile on gfx1030/ROCm 7.2 and the single-wave constraint of the
+buffer_load→LDS passthrough).
 
 ## Not ported (documented scope exclusions)
 
-Grouped/biased routing (`moe_fused_gate.cu`), radix `topk_plain`, E8M0 (MX)
-byte scales, `scale_ub`, hadamard32 rotate, scale layout shuffles, gfx1250
-tuning, pad-row/`finished` handling, multi-block `moe_align` variants (the
-upstream single-block launch caps `num_experts <= 1024`).
+`topk_plain` radix select, E8M0/MX scale shuffles, `scale_ub`, gfx1250
+tuning, multi-block `moe_align` variants, rope thd/2d layouts + backward +
+fused variants, varlen/chunk-offset GDN paths, per-k-channel gk decay, the
+blob-generation staging machinery of the JIT cache, Windows pid probes.
 
 ## Build & test
 
-Pure CPU: no GPU, no ROCm/HIP, no external dependencies (C++20,
-CMake >= 3.16).
+core/ and design/: pure CPU (C++20, CMake >= 3.16, no dependencies):
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
@@ -69,7 +98,12 @@ cmake --build build -j
 ctest --test-dir build --output-on-failure
 ```
 
-## Upstream pin
+gpu/: inside the ROCm container only — `gpu/run_gfx1030.sh` builds and runs
+all four demos; expected output ends with all-PASS lines (see
+`gpu/README.md`).
 
-aiter shallow clone of `1eab5ae12c93af3c8c660202d9a413f637c2f011`
-(2026-11-09). aiter's MIT license text: `LICENSES/MIT.txt`.
+## Rust twin
+
+`../aiter-extract` is the single-threaded Rust extraction of the round-1
+modules (same upstream pin, `cargo test`); the round-2 harvest is C++-only
+by decision.
