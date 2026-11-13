@@ -1,0 +1,2 @@
+./main-hip-amdgcn-amd-amdhsa-gfx1030.s
+./main-host-x86_64-unknown-linux-gnu.s
