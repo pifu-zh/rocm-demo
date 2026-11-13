@@ -85,4 +85,10 @@ kernel 文件 → jit 模块 → python 函数映射完整表见附录 A（`aite
 
 ## 附录 A：完整 kernel 条目
 
-（三路考古报告原文已转录，条目 schema：name/path/entry/math/hw_deps/arch_guards/emu_path/backend/notes/python。为控制体量，此处收录索引；完整逐文件条目存于考古会话记录，关键条目已并入 TECHNIQUE_CATALOG.md。）
+三路考古报告**完整原文**已归档于 `docs/archaeology/`（逐字转录，含全部 file:line）：
+
+- `archaeology/01-kernels-algorithms.md` — csrc/kernels 全量逐文件 schema 条目 + python 映射表 + 汇总表
+- `archaeology/02-backends-compiler.md` — opus/CK/FlyDSL/cpp_itfs/dispatch/构建系统/builtin 清单/流水线案例
+- `archaeology/03-python-runtime.md` — jit 机制/架构探测/fallback 全表/ops 清单/dist+plugin/triton/验证工具
+
+六份知识地图是上述原文的提炼层；复查任何 file:line 结论以 archaeology/ 原文为准。
