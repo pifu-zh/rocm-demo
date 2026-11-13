@@ -94,6 +94,22 @@ Highlights pinned by the round-2 tests:
 processes on one key: exactly one compiles, the loser hits the cache) and
 that a crashed holder's lock is broken and its work redone.
 
+## demos/ — lab 结构（Milestone 2，五类覆盖）
+
+| 类目 | Demo | 状态 |
+|---|---|---|
+| emulation | `demos/emulation/soft_tma` | HARDWARE_PASS + PERFORMANCE_MEASURED（C++ B=4 507.6 GB/s = 91.1% of ISA 参照） |
+| emulation | `demos/emulation/soft_fp8` | HARDWARE_PASS + PERFORMANCE_MEASURED（219,488 穷举 0 失败；流 477-533 GB/s） |
+| emulation | `demos/emulation/soft_fp4` | HARDWARE_PASS + PERFORMANCE_MEASURED（穷举 0 失败；MXFP4 SF 点积界内） |
+| emulation | `demos/emulation/warp_sync` | HARDWARE_PASS + PERFORMANCE_MEASURED（四原语 PASS；mbarrier 230.6 ns = 1.6× native） |
+| compiler | `demos/compiler/inline_asm_waitcnt` | HARDWARE_PASS + STATIC_ANALYSIS_PASS（IR/ISA 产物在 results/） |
+| hardware | `demos/hardware/lds_passthrough` | HARDWARE_PASS（32 lane 位级；V#/m0/单波约束实测） |
+| runtime | `demos/runtime/jit_cache_minimal` | REFERENCE_PASS（双进程单建造者实证，锚点） |
+| algorithm | `demos/algorithm/moe_fused_gate` | REFERENCE_PASS（2343 checks，锚点） |
+
+gpu/ 仍保留：`soft_tma_pipeline.s`（ISA 参照实现）与 `toolchain.hip`
+（编译器接口探针 + 实证发现）；对应 cmake 顶层测试照旧。
+
 ## gpu/ demos
 
 See `gpu/README.md` (container build line, lineage, measured numbers, and
