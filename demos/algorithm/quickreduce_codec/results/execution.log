@@ -1,0 +1,18 @@
+0. packed-hex constant table -> bf16 scalar cross-check: PASS
+── Q4 ──
+A. Q4 round trip: err <= 1.05 LSB interior / 1.3 LSB clip ends, absmax decodes: PASS
+B. Q4 all-zero block safe (eps guards rcp): PASS
+C. Q4 bit-layout integer round trip (all 32 codes x lane orders): PASS
+D. Q4 256-thread tile send/recv (stride 1152 B, real offsets): PASS
+── Q3 ──
+A. Q3 round trip: err <= 1.05 LSB interior / 1.3 LSB clip ends, absmax decodes: PASS
+B. Q3 all-zero block safe (eps guards rcp): PASS
+C. Q3 bit-layout integer round trip (all 16 codes x lane orders): PASS
+D. Q3 256-thread tile send/recv (stride 896 B, real offsets): PASS
+── Q6 ──
+A. Q6 round trip: err <= 1.05 LSB interior / 1.3 LSB clip ends, absmax decodes: PASS
+B. Q6 all-zero block safe (eps guards rcp): PASS
+C. Q6 bit-layout integer round trip (all 128 codes x lane orders): PASS
+D. Q6 256-thread tile send/recv (stride 1664 B, real offsets): PASS
+6. transmitted-tile compression (4096B raw): Q4 3.556x Q3 4.571x Q6 2.462x: PASS
+quickreduce_codec: 56855 checks, 0 failures -> PASS
