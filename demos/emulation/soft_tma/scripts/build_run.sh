@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 HIPCC=${HIPCC:-hipcc}
 CLANG=${CLANG:-/opt/rocm-7.2.4/lib/llvm/bin/clang}
 ARCH=${ARCH:-gfx1030}
-REPO_ROOT=$(cd ../.. && pwd)
+REPO_ROOT=$(cd ../../.. && pwd)
 
 echo "=== assemble ISA reference (soft_tma_pipeline.s) ==="
 "$CLANG" -x assembler -target amdgcn-amd-amdhsa -mcpu="$ARCH" \

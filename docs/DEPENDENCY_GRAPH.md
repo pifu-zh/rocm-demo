@@ -52,7 +52,7 @@ cpp_itfs：jinja 模板 → utils.py compile_lib（hipcc+make）→ ctypes；lru
 | aiter 依赖 | lab 替代 | 已落地于 |
 |---|---|---|
 | torch tensor/AT_DISPATCH | torch-free `aiter_tensor_t`→ 普通指针 API | core/*（vector 入参）|
-| opus DSL | 直接 builtin/内联汇编/纯 C++ | gpu/soft_* |
+| opus DSL | 直接 builtin/内联汇编/纯 C++ | demos/emulation/soft_* + gpu/soft_tma_pipeline.s |
 | hiprand | 位级复刻 philox4x32_10 | core/sample |
 | CK/FlyDSL/hipBLASLt | 不复现（记录于 BACKEND_MATRIX） | — |
 | rocminfo 架构探测 | 编译期 `__gfx1030__` + hipDeviceProp | gpu/* |

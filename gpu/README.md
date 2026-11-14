@@ -11,11 +11,13 @@ docker exec gfx-m1 bash /home/zhuo/workspace/src/rocm-demo/gpu/run_gfx1030.sh
 
 ## Demo 一览
 
+原单文件 demo（`soft_fp8.hip` / `soft_fp4.hip` / `soft_tma.hip`）已迁往
+`demos/emulation/<name>/`（per-demo CMake / scripts / results）；本目录只保留
+下表两件，构建走 `run_gfx1030.sh`。
+
 | Demo | 展示的设计 | 验证方式 |
 |---|---|---|
-| `soft_fp8.hip` | 无 fp8 硬件的 E4M3FN GEMM：位解码/LDS-LUT 两条软解码路径 + f32 FFMA 累加 | host 双精度参考，误差 ≤ 理论累加界（实测界内 0.9%） |
-| `soft_fp4.hip` | MXFP4（E2M1+e8m0）软点积 + **SF 折叠**（组外乘 scale、组内纯 FFMA） | host 双精度参考 + 逐元素最坏情况界 |
-| `soft_tma_pipeline.s` + `soft_tma.hip` | **soft-TMA 软件流水**：prologue 预取 4×dwordx4 + `vmcnt(4)` 部分排空 + `ds_write_b128` 进 LDS 双缓冲（s16 XOR 换相）+ 消费；手写 ISA 经 clang 汇编 → `hipModuleLoadData` → 启动 | 32768 lane 逐位对拍（max_abs=0）+ plain 基线吞吐对照 |
+| `soft_tma_pipeline.s` | **手写 ISA 参照实现**（soft-TMA 软件流水：prologue 预取 4×dwordx4 + `vmcnt(4)` 部分排空 + `ds_write_b128` 进 LDS 双缓冲（s16 XOR 换相）+ 消费）；clang 汇编 → `hipModuleLoadData` → 启动 | 32768 lane 逐位对拍（max_abs=0）；作为 `demos/emulation/soft_tma` 的校准参照消费 |
 | `toolchain.hip` | hipRTC 运行时编译；`__builtin_amdgcn_ds_bpermute`；buffer_load→LDS 直通（ISA 版验证 + builtin 版如实报告错位） | 各子例自检 PASS |
 
 ## 谱系与口径
@@ -24,9 +26,9 @@ soft_tma 是 cuda-oxide soft-TMA 研究线（2026-11-04 收线）的**教学重�
 改编自已验证的 `lds_b4` 微基准 kernel（原工程
 `cuda-oxide/scripts/soft_tma_bench/`）。收线数字 553 GB/s = 经验上限
 575.5 GB/s 的 96.1% = D2D 参照的 91.4%（完美替代档）来自 8×255MiB 区域
-轮转 + 中位数协议；本 demo 的吞吐（~680 GB/s @ 269 MB 读+写、无轮转）
-是**不同口径下的示意数字**（小 buffer、L2 部分常驻），不可与收线基准
-直接对比。同基准复跑请用原工程。
+轮转 + 中位数协议；`soft_tma_pipeline.s` 的同族口径复跑（556.9 GB/s，
+2026-11-14）与 C++ 版逐级数字见
+`demos/emulation/soft_tma/results/RESULTS.md`。同基准复跑请用原工程。
 
 ## 实证发现（本轮新增，已写入 kernel 注释）
 

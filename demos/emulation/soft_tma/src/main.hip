@@ -140,8 +140,8 @@ int main(int argc, char** argv) {
                 bad += !okB;
             }
         }
-        hipFree(d);
-        hipFree(o);
+        CK(hipFree(d));
+        CK(hipFree(o));
         std::fflush(stdout);
         if (bad) return 1;
     }
@@ -282,9 +282,9 @@ int main(int argc, char** argv) {
         }
     }
 
-    hipFree(dsrc);
-    hipFree(ddst);
-    hipFree(dcopy);
+    CK(hipFree(dsrc));
+    CK(hipFree(ddst));
+    CK(hipFree(dcopy));
     std::printf("soft_tma demo: %s\n", bad ? "FAIL" : "PASS");
     return bad ? 1 : 0;
 }

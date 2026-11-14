@@ -92,7 +92,7 @@ demo：compiler 类（builtin 单元驱动，每个 20 行 --genco TU 可独立�
 | core/sample, rope, kv_cache, group_quant, hadamard_quant, gdn_state | 算法/模拟混合 | REFERENCE_PASS |
 | core/fp8 | 模拟（codec） | REFERENCE_PASS |
 | design/jit_cache, dispatch | 运行时 | REFERENCE_PASS（双进程并发实证）|
-| gpu/soft_fp8, soft_fp4 | 模拟 | HARDWARE_PASS（gfx1030 真机）+ 界内数值验证 |
-| gpu/soft_tma(.s) + toolchain | 模拟/编译器/硬件 | HARDWARE_PASS；toolchain 含 miscompile 实证（STATIC_ANALYSIS 层证据）|
+| demos/emulation/soft_fp8, soft_fp4 | 模拟 | HARDWARE_PASS（gfx1030 真机）+ 界内数值验证 |
+| demos/emulation/soft_tma + gpu/soft_tma_pipeline.s + gpu/toolchain | 模拟/编译器/硬件 | HARDWARE_PASS + PERFORMANCE_MEASURED；toolchain 含 miscompile 实证（STATIC_ANALYSIS 层证据）|
 
-待 M2 升格到 demos/ 统一标准（per-demo CMake/README/results/inspection）。
+M2 已完成升格：demos/ 统一 per-demo CMake/README/results 标准。

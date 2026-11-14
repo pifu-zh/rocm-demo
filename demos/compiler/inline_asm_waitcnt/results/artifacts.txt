@@ -1,2 +1,4 @@
 ./main-hip-amdgcn-amd-amdhsa-gfx1030.s
 ./main-host-x86_64-unknown-linux-gnu.s
+s_waitcnt occurrences in main-hip-amdgcn-amd-amdhsa-gfx1030.s: 30
+s_waitcnt occurrences in main-hip-amdgcn-amd-amdhsa-gfx1030.s: 30

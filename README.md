@@ -107,8 +107,9 @@ that a crashed holder's lock is broken and its work redone.
 | runtime | `demos/runtime/jit_cache_minimal` | REFERENCE_PASS（双进程单建造者实证，锚点） |
 | algorithm | `demos/algorithm/moe_fused_gate` | REFERENCE_PASS（2343 checks，锚点） |
 
-gpu/ 仍保留：`soft_tma_pipeline.s`（ISA 参照实现）与 `toolchain.hip`
-（编译器接口探针 + 实证发现）；对应 cmake 顶层测试照旧。
+gpu/ 仍保留：`soft_tma_pipeline.s`（ISA 参照实现，被
+`demos/emulation/soft_tma` 消费）与 `toolchain.hip`（编译器接口探针 +
+实证发现）；构建走 `gpu/run_gfx1030.sh`。
 
 ## gpu/ demos
 
@@ -134,9 +135,10 @@ cmake --build build -j
 ctest --test-dir build --output-on-failure
 ```
 
-gpu/: inside the ROCm container only — `gpu/run_gfx1030.sh` builds and runs
-all four demos; expected output ends with all-PASS lines (see
-`gpu/README.md`).
+gpu/ and demos/: inside the ROCm container only — `gpu/run_gfx1030.sh`
+assembles the ISA reference and runs the toolchain probe; each
+`demos/*/*/scripts/build_run.sh` builds and runs one demo. Expected output
+ends with all-PASS lines (see `gpu/README.md` and per-demo READMEs).
 
 ## Rust twin
 

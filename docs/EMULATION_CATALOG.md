@@ -11,10 +11,10 @@
 原功能：`cvt.rn.satfinite.e4m3x2.f32` 类硬件转换。缺：gfx1030 无任何 fp8 cvt。处理层：设备库（cuda-oxide fp8.rs / 本 lab soft_fp8.hpp）。路径：纯位操作 RNE + satfinite（denormal 算术解码 m·2⁻⁹、溢出 clamp、NaN 规范化）。调用链：kernel 内联函数，无外部依赖。语义保证：CUDA `cuda_fp8.h` 契约 + **450,852 项穷举零失败**（cuda-oxide）+ 本 lab 界内对拍。代价：转换占 ALU（吞吐分级：标量 91-98% of copy=完美档；packed decode 81-82%=优秀档）。demo：soft_fp8_test/bench（HARDWARE_PASS；cuda-oxide 侧 PERFORMANCE_MEASURED）。
 
 **E2. MXFP4/E2M1+e8m0 软转换** [SIM]
-同上；E2M1 表解码 + RNE satfinite（aiter 侧 scalar `even_round_e2m1` quant_mxfp4.cu:45-79 是 aiter 自己的 emu；cuda-oxide fp8.rs:207-245 独立实现）；e8m0 = 2^(b−127)（aiter 无 codec，lab 补齐）。demo：soft_fp4_test（计划）。
+同上；E2M1 表解码 + RNE satfinite（aiter 侧 scalar `even_round_e2m1` quant_mxfp4.cu:45-79 是 aiter 自己的 emu；cuda-oxide fp8.rs:207-245 独立实现）；e8m0 = 2^(b−127)（aiter 无 codec，lab 补齐）。demo：demos/emulation/soft_fp4（HARDWARE_PASS + PERFORMANCE_MEASURED）。
 
 **E3. soft-TMA：gmem→LDS 深流水** [SIM]
-原功能：TMA/cp.async.bulk（bulk 异步搬运）。缺：RDNA2 无 TDM/异步拷贝。处理层：手写 kernel。路径：prologue 发 B×dwordx4 → 循环发下 B + `s_waitcnt vmcnt(B)` 部分排空 → ds_write_b128 进 LDS 双缓冲（XOR 换相）→ 消费。语义保证：15/15 配置正确性（原工程）+ 本 lab 32768 lane 位级。代价：收线 553 GB/s=96.1% 经验上限=91.4% of D2D（完美替代档）。demo：gpu/soft_tma（HARDWARE_PASS）；**C++ 版（vmcnt inline asm）= 本轮计划**。
+原功能：TMA/cp.async.bulk（bulk 异步搬运）。缺：RDNA2 无 TDM/异步拷贝。处理层：手写 kernel。路径：prologue 发 B×dwordx4 → 循环发下 B + `s_waitcnt vmcnt(B)` 部分排空 → ds_write_b128 进 LDS 双缓冲（XOR 换相）→ 消费。语义保证：15/15 配置正确性（原工程）+ 本 lab 32768 lane 位级。代价：收线 553 GB/s=96.1% 经验上限=91.4% of D2D（完美替代档）。demo：demos/emulation/soft_tma（C++ vmcnt inline asm 版，HARDWARE_PASS + PERFORMANCE_MEASURED，91.1% of ISA）+ ISA 参照 gpu/soft_tma_pipeline.s。
 
 **E4. 软 mbarrier** [SIM]
 原功能：Hopper mbarrier（相位/计数/expect_tx）。缺：RDNA2 无。路径：单 i64 LDS 状态机 `{pending|expected|phase}`（amdgcn.rs:947,1131）：arrive=原子减+末者翻相；test_wait=非阻塞谓词；**expect_tx 字节级不支持**（开放缺口，等价物=vmcnt 部分排空）。代价：462.9 ns/op = 7.8× s_barrier（延迟型，低于 60% 线如实披露）。demo：warp_sync.hpp（计划）。

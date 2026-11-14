@@ -3,3 +3,4 @@ partial_drain_probe
 *.ll
 main-host*
 main-hip*
+!results/main-hip-amdgcn-amd-amdhsa-gfx1030.s
