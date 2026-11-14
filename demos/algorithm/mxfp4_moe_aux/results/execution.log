@@ -1,0 +1,7 @@
+1. 3-stage vs single-CTA identical: PASS
+2a. reverse_sorted inverse permutation: PASS
+2b. segment multiset + pad sentinel + block consistency: PASS
+3. quant scale/round-trip contract (worst err/3qs = 0.323): PASS
+4a. scatter_reduce bf16 vs oracle: PASS
+4b. scatter_reduce mxfp4 (quantized-domain exact, D=128): PASS
+mxfp4_moe_aux: 8237 checks, 0 failures -> PASS

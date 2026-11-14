@@ -106,6 +106,7 @@ that a crashed holder's lock is broken and its work redone.
 | hardware | `demos/hardware/lds_passthrough` | HARDWARE_PASS（32 lane 位级；V#/m0/单波约束实测） |
 | runtime | `demos/runtime/jit_cache_minimal` | REFERENCE_PASS（双进程单建造者实证，锚点） |
 | algorithm | `demos/algorithm/moe_fused_gate` | REFERENCE_PASS（2343 checks，锚点） |
+| algorithm | `demos/algorithm/mxfp4_moe_aux` | SOURCE_VERIFIED + REFERENCE_PASS（M3：6 组 8237 checks；双排序变体互证 + 量化契约 + 隐式 `d_hidden%128` 约束；发现 oracle 一致性≠正确性教训） |
 
 gpu/ 仍保留：`soft_tma_pipeline.s`（ISA 参照实现，被
 `demos/emulation/soft_tma` 消费）与 `toolchain.hip`（编译器接口探针 +
