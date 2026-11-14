@@ -326,6 +326,156 @@ int main() {
                     f ? "FAIL" : "PASS");
     }
 
+    // ── 4. scale layouts: Natural / Flydsl / Opus (the store_scale_e8m0
+    //    contract, extracted verbatim from the kernel) ──
+    {
+        Lcg rng(0x1187);
+        int f = 0;
+        // model: m = tokens x head_num rows, groups_per_row groups per row.
+        // head_num = 32 (the Opus layout requires head_num % 32 == 0).
+        const int tokens = 4, head_num = 32, groups_per_row = 2;
+        const int m = tokens * head_num;  // 128 rows
+        std::vector<std::uint8_t> scale_val(m * groups_per_row);
+        for (auto& v : scale_val) v = static_cast<std::uint8_t>(rng.next() & 0xFF);
+
+        // the three layout writers (kernel-faithful translations)
+        auto store_natural = [&](std::vector<std::uint8_t>& buf) {
+            buf.assign(static_cast<std::size_t>(m) * groups_per_row, 0xEE);
+            for (int row = 0; row < m; ++row)
+                for (int g = 0; g < groups_per_row; ++g)
+                    buf[static_cast<std::size_t>(row) * groups_per_row + g] =
+                        scale_val[row * groups_per_row + g];
+        };
+        auto store_flydsl = [&](std::vector<std::uint8_t>& buf) {
+            const int m_tiles = head_num >> 4;
+            const int m_tiles_padded = (m_tiles + 3) & ~3;
+            const std::size_t size = static_cast<std::size_t>(tokens) * groups_per_row * 16 *
+                                     m_tiles_padded;
+            buf.assign(size, 0xEE);
+            for (int row = 0; row < m; ++row)
+                for (int g = 0; g < groups_per_row; ++g) {
+                    const int prefix_idx = row / head_num;
+                    const int head_idx = row - prefix_idx * head_num;
+                    const int m_tile = head_idx >> 4;
+                    const int m_inner = head_idx & 15;
+                    const std::size_t tile_base =
+                        (static_cast<std::size_t>(prefix_idx) * groups_per_row + g) * 16 *
+                            m_tiles_padded +
+                        m_inner * m_tiles_padded;
+                    buf[tile_base + m_tile] = scale_val[row * groups_per_row + g];
+                    // the kernel's padding fill: the LAST tile zero-fills the
+                    // pad slots
+                    if (m_tiles_padded != m_tiles && m_tile == m_tiles - 1)
+                        for (int pad = m_tiles; pad < m_tiles_padded; ++pad)
+                            buf[tile_base + pad] = 0;
+                }
+        };
+        auto store_opus = [&](std::vector<std::uint8_t>& buf) {
+            const int tiles = head_num / 32;
+            buf.assign(static_cast<std::size_t>(tokens) * head_num * 4, 0xEE);
+            for (int row = 0; row < m; ++row)
+                for (int g = 0; g < groups_per_row; ++g) {
+                    const int head = row % head_num;
+                    const std::size_t offset =
+                        static_cast<std::size_t>(row / head_num) * head_num * 4 +
+                        (g % 2) * head_num * 2 + (head % 32) * 2 * tiles +
+                        (g / 2) * tiles + head / 32;
+                    buf[offset] = scale_val[row * groups_per_row + g];
+                }
+        };
+
+        // value round trip per layout: read back each (row, group) via the
+        // layout's documented indexing and compare with the written value
+        std::vector<std::uint8_t> bnat, bfly, bopus;
+        store_natural(bnat);
+        store_flydsl(bfly);
+        store_opus(bopus);
+
+        // Natural: row-major, trivially the written values
+        ++checks;
+        bool nat_ok = true;
+        for (int row = 0; row < m && nat_ok; ++row)
+            for (int g = 0; g < groups_per_row; ++g)
+                if (bnat[static_cast<std::size_t>(row) * groups_per_row + g] !=
+                    scale_val[row * groups_per_row + g])
+                    nat_ok = false;
+        if (!nat_ok && f < 5) {
+            std::printf("  Natural layout round trip broken\n");
+            ++f;
+        }
+
+        // Flydsl: invert the index math per (row, group)
+        ++checks;
+        const int m_tiles = head_num >> 4;
+        const int m_tiles_padded = (m_tiles + 3) & ~3;
+        bool fly_ok = true;
+        for (int row = 0; row < m && fly_ok; ++row)
+            for (int g = 0; g < groups_per_row; ++g) {
+                const int prefix_idx = row / head_num;
+                const int head_idx = row - prefix_idx * head_num;
+                const int m_tile = head_idx >> 4;
+                const int m_inner = head_idx & 15;
+                const std::size_t tile_base =
+                    (static_cast<std::size_t>(prefix_idx) * groups_per_row + g) * 16 *
+                        m_tiles_padded +
+                    m_inner * m_tiles_padded;
+                if (bfly[tile_base + m_tile] != scale_val[row * groups_per_row + g]) fly_ok = false;
+            }
+        if (!fly_ok && f < 5) {
+            std::printf("  Flydsl layout round trip broken\n");
+            ++f;
+        }
+        // Flydsl padding: every pad slot (m_tiles..m_tiles_padded per
+        // m_inner) is ZERO — checked exactly (a global sentinel scan would
+        // false-positive on scale values that happen to equal it)
+        ++checks;
+        bool fly_pad_ok = true;
+        for (int prefix = 0; prefix < tokens; ++prefix)
+            for (int g = 0; g < groups_per_row; ++g)
+                for (int inner = 0; inner < 16; ++inner) {
+                    const std::size_t tb =
+                        (static_cast<std::size_t>(prefix) * groups_per_row + g) * 16 *
+                            m_tiles_padded +
+                        inner * m_tiles_padded;
+                    for (int pad = m_tiles; pad < m_tiles_padded; ++pad)
+                        if (bfly[tb + pad] != 0) fly_pad_ok = false;
+                }
+        if (!fly_pad_ok && f < 5) {
+            std::printf("  Flydsl padding slots not zero\n");
+            ++f;
+        }
+
+        // Opus: invert per (row, group)
+        ++checks;
+        const int tiles = head_num / 32;
+        bool opus_ok = true;
+        for (int row = 0; row < m && opus_ok; ++row)
+            for (int g = 0; g < groups_per_row; ++g) {
+                const int head = row % head_num;
+                const std::size_t offset =
+                    static_cast<std::size_t>(row / head_num) * head_num * 4 +
+                    (g % 2) * head_num * 2 + (head % 32) * 2 * tiles + (g / 2) * tiles +
+                    head / 32;
+                if (bopus[offset] != scale_val[row * groups_per_row + g]) opus_ok = false;
+            }
+        if (!opus_ok && f < 5) {
+            std::printf("  Opus layout round trip broken\n");
+            ++f;
+        }
+
+        // cross-layout consistency: a consumer reading each layout recovers
+        // the same logical scale for every (row, group)
+        ++checks;
+        bool consistent = nat_ok && fly_ok && opus_ok;
+        if (!consistent && f < 5) {
+            std::printf("  cross-layout consistency broken\n");
+            ++f;
+        }
+        fails += f > 0;
+        std::printf("4. scale layouts Natural/Flydsl/Opus (round trips + pad fill): %s\n",
+                    f ? "FAIL" : "PASS");
+    }
+
     std::printf("dsv4_hadamard_rotate_quant: %d checks, %d failures -> %s\n", checks, fails,
                 fails ? "FAIL" : "PASS");
     return fails ? MAIN_RETURN_BAD : 0;

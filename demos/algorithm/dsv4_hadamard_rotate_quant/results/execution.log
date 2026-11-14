@@ -1,4 +1,5 @@
 1. butterfly rotation == explicit Hadamard matrix oracle (dim 16/32/64): PASS
 2. FP4 scale contract (ceil_pow2(amax/6), no clip, decode bound): PASS
 3. end-to-end rotate->FP4 quant (err <= 1.05 LSB; energy preserved): PASS
-dsv4_hadamard_rotate_quant: 736 checks, 0 failures -> PASS
+4. scale layouts Natural/Flydsl/Opus (round trips + pad fill): PASS
+dsv4_hadamard_rotate_quant: 741 checks, 0 failures -> PASS
