@@ -1,0 +1,7 @@
+1. WaveTopkFilter: ballot/staging/integrate/overflow vs naive (6 cfgs): PASS
+2. WaveTopkSort: chunked sort/merge vs naive: PASS
+3. Block-wide reduce (wave ranges + halving merge tree): PASS
+4. threshold contract (monotone; final == true k-th best): PASS
+5. dispatch: should_use_topk_radix formula + calc_capacity: PASS
+6. tie behavior (value multiset pinned; index order free): PASS
+topk_plain_strategies: 116 checks, 0 failures -> PASS
