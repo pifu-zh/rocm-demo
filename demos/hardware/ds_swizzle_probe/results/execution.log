@@ -1,0 +1,6 @@
+code 0x041F (N=1): [BUTTERFLY src=i^N] 
+code 0x081F (N=2): [BUTTERFLY src=i^N] 
+code 0x101F (N=4): [BUTTERFLY src=i^N] 
+3-step butterfly (xor1+2+4) == 8-lane group sum: PASS
+5-step butterfly (xor1..16) == compiled-wave (32) sum: PASS (wave sum=1488)
+ds_swizzle_probe: PASS
