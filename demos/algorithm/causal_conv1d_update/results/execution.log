@@ -1,0 +1,5 @@
+1. non-circular two-pass shift + conv vs naive (w2/3/4 x 2 geom x silu): PASS
+2. circular ring buffer (w2/3/4, 16 calls, wrapping cursor): PASS
+3. continuous batching (indirection + pad skip + shared slot): PASS
+4. large-seqlen state hygiene (outputs AND state correct for all seqlen): PASS
+causal_conv1d_update: 377 checks, 0 failures -> PASS

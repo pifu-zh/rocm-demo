@@ -115,6 +115,7 @@ that a crashed holder's lock is broken and its work redone.
 | algorithm | `demos/algorithm/gdr_decode_chain` | SOURCE_VERIFIED + REFERENCE_PASS（M3：5 组 8,470,774 checks；GDR delta-rule 双 schedule + ds_swizzle XOR butterfly + swizzled fp32 state 池 + LDS bank pad；sentinel 策略不对称已钉） |
 | algorithm | `demos/algorithm/quickreduce_codec` | SOURCE_VERIFIED + REFERENCE_PASS（M3：Q4/Q3/Q6 位级编解码器 56,855 checks；符号翻转量化设计点 + 真实 tile 布局环回 + 压缩比 3.56×/4.57×/2.46×；IPC communicator 范围排除） |
 | algorithm | `demos/algorithm/topk_plain_strategies` | SOURCE_VERIFIED + REFERENCE_PASS（M3：ballot 过滤/分块排序/对折归约策略阶梯 + radix 决策公式 116 checks；输出=集合非顺序契约；过滤安全性论证提炼） |
+| algorithm | `demos/algorithm/causal_conv1d_update` | REFERENCE_PASS（M4：Mamba 式滑窗状态机制——两遍守卫式搬移/环形游标/连续批处理 377 checks；双实现互证；x_vals 种子必须内联 pass-2 的承重细节实测） |
 
 gpu/ 仍保留：`soft_tma_pipeline.s`（ISA 参照实现，被
 `demos/emulation/soft_tma` 消费）与 `toolchain.hip`（编译器接口探针 +
