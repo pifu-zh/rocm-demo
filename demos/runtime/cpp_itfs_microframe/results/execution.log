@@ -1,0 +1,6 @@
+1. LRUCache (splice-to-front, update-in-place, evict, unbounded): PASS
+2. content-addressed naming (md5 vectors, case-fold, cache): PASS
+3. SharedLibrary RAII (dlopen libm, dlsym sqrt, error path): PASS
+4. build-if-missing + cached-load orchestration (stub builder): PASS
+5. concurrent LRUCache hammering (3 threads x 20k ops): PASS
+cpp_itfs_microframe: 21 checks, 0 failures -> PASS

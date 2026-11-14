@@ -105,6 +105,7 @@ that a crashed holder's lock is broken and its work redone.
 | compiler | `demos/compiler/inline_asm_waitcnt` | HARDWARE_PASS + STATIC_ANALYSIS_PASS（IR/ISA 产物在 results/） |
 | hardware | `demos/hardware/lds_passthrough` | HARDWARE_PASS（32 lane 位级；V#/m0/单波约束实测） |
 | runtime | `demos/runtime/jit_cache_minimal` | REFERENCE_PASS（双进程单建造者实证，锚点） |
+| runtime | `demos/runtime/cpp_itfs_microframe` | SOURCE_VERIFIED + REFERENCE_PASS（M3：LRUCache/内容寻址命名/dlopen RAII/build-if-missing 编排 21 checks；MD5 RFC 向量钉死；opus --genco 归 compiler 线锚点） |
 | algorithm | `demos/algorithm/moe_fused_gate` | REFERENCE_PASS（2343 checks，锚点） |
 | algorithm | `demos/algorithm/mxfp4_moe_aux` | SOURCE_VERIFIED + REFERENCE_PASS（M3：6 组 8237 checks；双排序变体互证 + 量化契约 + 隐式 `d_hidden%128` 约束；发现 oracle 一致性≠正确性教训） |
 | algorithm | `demos/algorithm/gdr_decode_chain` | SOURCE_VERIFIED + REFERENCE_PASS（M3：5 组 8,470,774 checks；GDR delta-rule 双 schedule + ds_swizzle XOR butterfly + swizzled fp32 state 池 + LDS bank pad；sentinel 策略不对称已钉） |
