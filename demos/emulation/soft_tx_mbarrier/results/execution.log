@@ -1,8 +1,8 @@
-  T1 consumer: spins=244 word=100000000
+  T1 consumer: spins=199 word=100000000
 1. single-shot 2x256B (consumer verifies payload): PASS
 2. byte gating (arrivals done + 0B -> gated; 3/4B -> gated; 4/4B -> flip; payload ok): PASS
 3. multi-round 100 (consumer re-arm, no re-init): PASS
-  T4 consumer: spins=28 word=100000000
+  T4 consumer: spins=21 word=100000000
 4. split completion 64 producers (staggered tx, payload ok): PASS
-5. latency per op (cycles @unknown clock; ratios are the signal): tx-mbarrier 496, plain 253, native 31 -> tx/plain 1.96x, tx/native 15.82x
+5. latency per op (cycles @unknown clock; ratios are the signal): tx-mbarrier 496, plain 253, native 31 -> tx/plain 1.96x, tx/native 15.78x
 soft_tx_mbarrier: PASS

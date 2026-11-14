@@ -3,7 +3,7 @@
 **类目**: algorithm · **验证级别**: SOURCE_VERIFIED + REFERENCE_PASS（纯 CPU 主机参考，无 GPU 执行声明）
 **上游**: `aiter/csrc/kernels/dsv4_rotate_quant.cu`（hadamard_rotate_activation_fp4quant_kernel）@ `1eab5ae12c93af3c8c660202d9a413f637c2f011`（MIT）
 **依赖**: C++20 编译器，无 ROCm / 无 GPU / 无第三方库
-**结果**: 736 checks, 0 failures（`results/execution.log`，2026-11-14 容器 gfx-m1 / ROCm 10.1 内 g++）
+**结果**: 741 checks, 0 failures（`results/execution.log`，2026-11-14 容器 gfx-m1 / ROCm 10.1 内 g++）
 
 ## 一、原理说明
 
@@ -26,16 +26,21 @@ DeepSeek-V4 的 KV/Q 路径在量化前先做 **Hadamard 旋转**（把离群能
 的 lane 存储。量化值 = x / scale 的 E2M1（lab 的 RNE 编码器，soft_fp4 已验证）。
 
 ### 设计 [3]：scale 布局契约
-`groups_per_row = dim / group_size`，Natural 与 Flydsl（shuffled）两种布局
-选项——本 demo 钉死 Natural 行主索引。
+`groups_per_row = dim / group_size`，三种 `store_scale_e8m0` 布局已从
+kernel 逐条提取并钉死：Natural 行主索引；Flydsl
+`[token, group, m_inner(16), m_tile(m_tiles_padded)]` shuffled 打包
+（pad 槽零填，**精确逐槽校验**——全局哨兵扫描会被恰好等于模式的 scale
+值误报）；Opus `[token, group%2, head%32, group/2, head/32]` 交错
+（要求 head_num % 32 == 0）。三者均做 (row, group) 反演 round trip。
 
-## 二、测试清单（736 checks）
+## 二、测试清单（741 checks）
 
 | # | 内容 | 判据 |
 |---|---|---|
 | 1 | 蝴蝶旋转 vs 显式 Hadamard 矩阵 oracle（dim 16/32/64，含跨 lane 阶段） | 每元素 \|got-want\| ≤ 1e-4 |
 | 2 | FP4 scale 契约（256 行，log-uniform 幅值） | amax/scale ≤ fp4_max（永不 clip）；逐值 decode ≤ 1.3 LSB |
 | 3 | 端到端 rotate→quant→decode | 误差 ≤ 1.05 LSB；**能量守恒**（‖rotated‖/‖x‖ = 1 ± 1e-5，Hadamard 正交性） |
+| 4 | scale 布局 Natural/Flydsl/Opus round trip + Flydsl pad 槽零填（精确校验） | 全部 (row, group) 反演回原值 |
 
 ## 三、章程对照（10 项）
 
@@ -46,11 +51,11 @@ DeepSeek-V4 的 KV/Q 路径在量化前先做 **Hadamard 旋转**（把离群能
 | 独立实现 | 单 TU ~300 行：逻辑 lane 仿真 + 显式矩阵 oracle |
 | 最小依赖 | C++20；CPU-only |
 | Reference | E2M1 编解码归 soft_fp4/mxfp4_moe_aux；DPP 指令归 warp_sync 线 |
-| Correctness Test | 3 组 736 checks |
+| Correctness Test | 4 组 741 checks |
 | Build Script | `scripts/build_run.sh`；CMakeLists 亦可 ctest |
 | Inspection | 显式矩阵 oracle（O(n²) vs O(n log n) 双路径对撞）+ 能量守恒不变量 |
 | Hardware Matrix | 上游目标 gfx950 系（DSV4）；本 demo CPU 主机参考 |
-| Execution Result | `results/execution.log`：736 checks, 0 failures |
+| Execution Result | `results/execution.log`：741 checks, 0 failures |
 
 ## 四、复现
 

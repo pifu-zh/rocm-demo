@@ -5,13 +5,14 @@
 - 日期：2026-11-14
 - 环境：容器 gfx-m1（rocm10-dev:10.1.0，g++ -std=c++20 -O2；纯 CPU）
 - 命令：`scripts/build_run.sh`
-- 结果：**736 checks, 0 failures**（3 组全 PASS，一次通过）
+- 结果：**741 checks, 0 failures**（4 组全 PASS，一次通过）
 
 ```
 1. butterfly rotation == explicit Hadamard matrix oracle (dim 16/32/64): PASS
 2. FP4 scale contract (ceil_pow2(amax/6), no clip, decode bound): PASS
 3. end-to-end rotate->FP4 quant (err <= 1.05 LSB; energy preserved): PASS
-dsv4_hadamard_rotate_quant: 736 checks, 0 failures -> PASS
+4. scale layouts Natural/Flydsl/Opus (round trips + pad fill): PASS
+dsv4_hadamard_rotate_quant: 741 checks, 0 failures -> PASS
 ```
 
 ## 提炼记录
@@ -24,4 +25,5 @@ dsv4_hadamard_rotate_quant: 736 checks, 0 failures -> PASS
 - 能量守恒（Hadamard 正交 × dim_rsqrt）作为旋转正确性的独立不变量，
   与逐元素矩阵比对互证。
 - 上游的 MFMA/.buffer 指令细节不在本 demo 范围（hardware 线）；
-  scale 的 Flydsl shuffled 布局未提取（Natural 已钉，Flydsl 记录待做）。
+  scale 三布局（Natural / Flydsl shuffled + pad 零填精确校验 / Opus 交错）
+  已全部提取钉死（原计划"Flydsl 记录待做"由 M4 #3 completion 完成）。
