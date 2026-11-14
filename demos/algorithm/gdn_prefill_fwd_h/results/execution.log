@@ -1,0 +1,5 @@
+1. chunk recurrence (matrix emu vs per-pair naive, 3 chunks x 2 heads): PASS
+2. snapshot chain (h[c] = entering state, bf16): PASS
+3. tail chunk (actual_bt=2, zero-filled rows 2..63): PASS
+4. state slots (h0 indirection + zero sentinel): PASS
+gdn_prefill_fwd_h: 49157 checks, 0 failures -> PASS
