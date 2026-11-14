@@ -1,0 +1,5 @@
+1. per-head group quant (tds 2/8/16, silu vs sigmoid, eps variants): PASS
+2. per-token quant (amax across heads) + scale layouts: PASS
+3. zero guard (all-zero gated -> scale 1e-10, out 0, never NaN): PASS
+4. clamp saturation (outliers -> ±FP8_MAX, no wrap): PASS
+gated_rmsnorm_quant: 484 checks, 0 failures -> PASS
