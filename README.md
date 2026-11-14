@@ -108,6 +108,7 @@ that a crashed holder's lock is broken and its work redone.
 | hardware | `demos/hardware/ds_swizzle_probe` | HARDWARE_PASS（M3：BITMASK_PERM=src(i)^N 实测；gfx1030 编译 wave32 发现——xor32 不可达、shfl_xor 缺省宽度陷阱；builtin 需 union 位 punning 实测） |
 | hardware | `demos/hardware/v_dot2_probe` | HARDWARE_PASS（M3：gfx1030 有 v_dot2c_f32_f16 无 bf16 dot2（dot9 独占）；f32 累加模型 1M 步位级精确；dot2=2.0-2.2× fma 实测） |
 | hardware | `demos/hardware/sched_group_barrier_probe` | HARDWARE_PASS + STATIC_ANALYSIS_PASS（M3：注解=纯调度提示逐位等价；gfx1030 可用 id 0x8/0x11/0x18/0x28；发现 LLVM 调度器段错误雷区——同 gid 模式安全，与上游用法一致） |
+| hardware | `demos/hardware/copy_shape_tuning` | HARDWARE_PASS + PERFORMANCE_MEASURED（M4：拷贝形状扫描——v4×e1 任意块大小 = 494-500 GB/s 上限（shipped 已最优），e2/e4 塌 32-52%、v2/v1 塌 60-76%；L2 驻留假象 + 字节单位陷阱两次实测） |
 | runtime | `demos/runtime/jit_cache_minimal` | REFERENCE_PASS（双进程单建造者实证，锚点） |
 | runtime | `demos/runtime/cpp_itfs_microframe` | SOURCE_VERIFIED + REFERENCE_PASS（M3：LRUCache/内容寻址命名/dlopen RAII/build-if-missing 编排 21 checks；MD5 RFC 向量钉死；opus --genco 归 compiler 线锚点） |
 | algorithm | `demos/algorithm/moe_fused_gate` | REFERENCE_PASS（2343 checks，锚点） |

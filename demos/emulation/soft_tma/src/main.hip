@@ -221,6 +221,9 @@ int main(int argc, char** argv) {
         return hipGetLastError();
     });
     const double ms_copy = median_of3([&](float4* s) {
+        // shape swept by demos/hardware/copy_shape_tuning: at HBM-bound
+        // scale ALL 1-float4-per-thread shapes measure 494-500 GB/s (block
+        // size immaterial); the shipped shape stays
         copy_f4<<<static_cast<int>((kRegionF4 + 1023) / 1024), 1024>>>(s, dcopy, kRegionF4);
         return hipGetLastError();
     });
