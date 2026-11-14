@@ -1,0 +1,5 @@
+1. fp8-e4m3 branchless decode vs arithmetic (256B x bias 7/8 + spots): PASS
+2. e8m0 scale decode (256 bytes + anchor): PASS
+3. paged gather (permutation table + block straddle + window/offset): PASS
+4. fnuz variant (bias 8) end-to-end: PASS
+dsv4_dequant_gather_k: 779 checks, 0 failures -> PASS
