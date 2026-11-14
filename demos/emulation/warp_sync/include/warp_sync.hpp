@@ -62,12 +62,14 @@ __device__ inline int redux_add(int val) {
 // Layout: [30:0] count | [31] parity | [63:32] round (round accumulates the
 // carry of every flip, so the WAIT condition is simply word>>31 changing).
 //
-// WHY atomicAdd-only: on gfx1030/ROCm 7.2 the 64-bit LDS atomicCAS was
-// measured to HANG (last-arriver stuck inside the CAS with 255 spinners
-// hammering the same word — device-level evidence, not speculation), while
-// 64-bit LDS atomicAdd is reliable (256-thread sweep green). The flip is
-// therefore expressed as one atomicAdd of ((1<<31) - expected): count resets
-// to 0 and the parity bit flips in a single reliable atomic.
+// WHY atomicAdd-only: on gfx1030 the 64-bit LDS atomicCAS was measured to
+// HANG (last-arriver stuck inside the CAS with 255 spinners hammering the
+// same word — device-level evidence, not speculation), while 64-bit LDS
+// atomicAdd is reliable (256-thread sweep green). RE-MEASURED on ROCm
+// 10.1 / HIP 7.16 / clang-24 (2026-11-14): the CAS flip still hangs
+// (timeout experiment) — the atomicAdd-only flip stays. The flip is
+// expressed as one atomicAdd of ((1<<31) - expected): count resets to 0
+// and the parity bit flips in a single reliable atomic.
 //
 // Late-arrival safety: a thread whose arrival lands after the flip adds into
 // the NEXT round's count (count continues from 0) — arrival counting is
@@ -96,10 +98,12 @@ __device__ inline void counted_barrier_sync(CountedBarrierState* st, int expecte
     // Structure is load-bearing against a SIMT wave-trap: the flip (done by
     // whichever lane's arrival completes the round) must execute BEFORE any
     // lane enters the spin. A divergent if(flip) else spin lets the compiler
-    // schedule the spin path FIRST — the flipper's lane is then trapped behind
-    // its wave-mates' infinite spin (measured deadlock at 32 threads, single
-    // wave, gfx1030). Uniform spin after the flip has no such trap: the
-    // flipper's own exit predicate is false immediately.
+    // schedule the spin path FIRST — the flipper's lane is then trapped
+    // behind its wave-mates' infinite spin (measured deadlock at 32
+    // threads, single wave, gfx1030). RE-MEASURED on ROCm 10.1 / clang-24:
+    // the divergent structure STILL deadlocks (timeout experiment) — the
+    // flip-before-spin structure stays. Uniform spin after the flip has no
+    // such trap: the flipper's own exit predicate is false immediately.
     const unsigned before = static_cast<unsigned>(st->word >> 31);
     const unsigned long long old = atomicAdd(&st->word, 1ull);
     const unsigned cnt = (old & 0x7FFFFFFFu) + 1u;
@@ -107,9 +111,14 @@ __device__ inline void counted_barrier_sync(CountedBarrierState* st, int expecte
         // last arriver: one atomicAdd resets the count and flips the parity
         atomicAdd(&st->word, 0x80000000ull - static_cast<unsigned long long>(expected));
     }
-    // uniform spin (flipper lane exits on the first check)
+    // uniform spin (flipper lane exits on the first check). NO backoff:
+    // ROCm 10.1 / clang-24 re-measurement — 15/15 full-suite runs clean
+    // without s_sleep, latency 624 -> 176 ns (1.2x native); the s_sleep(16)
+    // backoff itself was the latency cost. The LDS-starvation livelock this
+    // backoff once addressed was a ROCm 7.2.4-observable behavior
+    // (deterministic 12s zero-flip there); kept as a historical note for
+    // anyone reproducing on 7.x.
     while (static_cast<unsigned>(st->word >> 31) == before) {
-        __builtin_amdgcn_s_sleep(16);
     }
 }
 
@@ -153,12 +162,13 @@ __device__ inline unsigned mbarrier_arrive(SoftMbarrier* mb, unsigned expected) 
     return token;
 }
 
-// Blocking wait with backoff (tight LDS reads starve the flipper's atomic —
-// livelock without it, measured). All lanes run this loop; the flipper's
-// predicate is false on entry, so no wave-trap.
+// Blocking wait, tight spin (no backoff): ROCm 10.1 / clang-24 measured
+// 15/15 full-suite runs clean, latency 231 -> 188 ns (1.3x native). The
+// LDS-starvation livelock this backoff once addressed was a ROCm 7.2.4
+// observation (kept as a historical note for 7.x reproduction). All lanes
+// run this loop; the flipper's predicate is false on entry, so no wave-trap.
 __device__ inline void mbarrier_wait(SoftMbarrier* mb, unsigned token) {
     while (((mb->word >> 31) & 1u) == token) {
-        __builtin_amdgcn_s_sleep(16);
     }
 }
 

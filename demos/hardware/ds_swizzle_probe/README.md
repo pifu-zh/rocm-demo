@@ -1,6 +1,6 @@
 # ds_swizzle_probe — BITMASK_PERM 语义与 wave 大小的实测探针（gfx1030）
 
-**类目**: hardware · **验证级别**: HARDWARE_PASS（RX 6950 XT / gfx1030 / ROCm 7.2.4 真机执行，2026-11-14）
+**类目**: hardware · **验证级别**: HARDWARE_PASS（RX 6950 XT / gfx1030，ROCm 7.2.4 首测 + 10.1 重测均通过，2026-11-14）
 **动机**: aiter 的 `gdr_decode_packed_bf16.cu` / `quick_all_reduce.cuh` 使用 swizzle 码
 `(N << 10) | 0x1f`（kDsSwizzleXor1/2/4）做 XOR-butterfly 归约，但编码的字段语义
 在上游与 ISA 文档层面都未被 aiter 记录。主机参考
@@ -15,7 +15,8 @@
 2. **掩码 {1,2,4} 折叠的是连续 8-lane 块**（lane i 的组 = {i&~7 .. i&~7+7}），
    与上游 `reduce_k`（kKThreads=8）的用法精确一致。
 3. **gfx1030 编译为 wave32**（RDNA2 原生；全部 kernel 的
-   `.amdhsa_metadata` 实测 `wavefront_size: 32`，且行为一致）：
+   `.amdhsa_metadata` 实测 `wavefront_size: 32`，且行为一致；**10.1/clang-24
+   重测仍为 wave32**——这是硬件/驱动事实而非工具链伪象）：
    - 掩码 {1..16} 折叠整个 32-lane compiled wave；
    - **xor32 不可达**：clang 静默丢弃该步（ISA 中无 SWAP,32）；
    - `__shfl_xor(v, 32)` 在此宽度下退化为段内自身交换（累加器翻倍）——

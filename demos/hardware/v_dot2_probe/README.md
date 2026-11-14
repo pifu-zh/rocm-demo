@@ -1,6 +1,6 @@
 # v_dot2_probe — RDNA2 V_DOT2 指令的语义与吞吐实测（gfx1030）
 
-**类目**: hardware · **验证级别**: HARDWARE_PASS（RX 6950 XT / gfx1030 / ROCm 7.2.4 真机执行，2026-11-14）
+**类目**: hardware · **验证级别**: HARDWARE_PASS（RX 6950 XT / gfx1030，ROCm 7.2.4 首测 + 10.1 重测均通过，2026-11-14）
 **动机**: gfx1030 替代分析的核心问题之一——RDNA2 的点积指令能覆盖哪些
 aiter/MI300 用例、数值语义是否可精确建模。本探针测量，不假设。
 

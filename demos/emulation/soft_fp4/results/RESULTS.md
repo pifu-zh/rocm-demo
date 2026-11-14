@@ -1,6 +1,6 @@
 # Results — soft_fp4 (2026-11-13)
 
-环境：容器 gfx-m1（ROCm 7.2.4），GPU RX 6950 XT（gfx1030），hipcc -O3。
+环境：容器 gfx-m1（ROCm 10.1 / HIP 7.16 / clang-24；7.2.4 首测），GPU RX 6950 XT（gfx1030），hipcc -O3。
 
 | 检查族 | 项数 | 结果 |
 |---|---|---|

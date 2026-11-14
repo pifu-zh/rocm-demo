@@ -1,6 +1,6 @@
 # Results — inline_asm_waitcnt (2026-11-14)
 
-环境：容器 gfx-m1（ROCm 7.2.4），GPU RX 6950 XT（gfx1030），hipcc -O3。
+环境：容器 gfx-m1（ROCm 7.2.4；10.1 重测结论不变），GPU RX 6950 XT（gfx1030），hipcc -O3。
 
 1. 真机正确性：partial-drain probe PASS（位级，B=4 对齐形状）。
 2. IR/ISA 证据（results/）：

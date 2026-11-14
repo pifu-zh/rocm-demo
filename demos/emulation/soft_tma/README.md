@@ -2,7 +2,7 @@
 
 ## 验证等级
 
-**HARDWARE_PASS + PERFORMANCE_MEASURED**（gfx1030 / RX 6950 XT，ROCm 7.2.4 容器，2026-11-13）
+**HARDWARE_PASS + PERFORMANCE_MEASURED**（gfx1030 / RX 6950 XT；ROCm 7.2.4 首测，10.1 重测 506.7 GB/s 持平，2026-11-14）
 正确性 6/6 形状（三深度 × 对齐/三种尾形，位级）；吞吐同协议含手写 ISA 参照对照。
 
 ## 原理

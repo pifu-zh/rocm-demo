@@ -1,6 +1,6 @@
 # Results — soft_tma (2026-11-13)
 
-环境：容器 gfx-m1（rocm/dev-ubuntu-24.04:7.2.4-complete），GPU RX 6950 XT
+环境：容器 gfx-m1（rocm10-dev:10.1.0；7.2.4 首测），GPU RX 6950 XT
 （gfx1030/Navi 21，40 CU，256-bit @ 18 Gbps，经验上限 575.5 GB/s），
 hipcc ROCm 7.2.4，-O3。
 

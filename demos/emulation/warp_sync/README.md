@@ -2,7 +2,7 @@
 
 ## 验证等级
 
-**HARDWARE_PASS + PERFORMANCE_MEASURED**（gfx1030 / RX 6950 XT，ROCm 7.2.4，2026-11-13）
+**HARDWARE_PASS + PERFORMANCE_MEASURED**（gfx1030 / RX 6950 XT；ROCm 7.2.4 首测，10.1 重测并撤除 s_sleep 退避——counted barrier 624→176 ns，2026-11-14）
 四原语正确性全 PASS（含双并发部分组、3 轮重入、生产者/消费者可见性）；延迟已测。
 
 ## 原理

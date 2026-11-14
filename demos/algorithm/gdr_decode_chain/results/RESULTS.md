@@ -3,7 +3,7 @@
 ## 执行记录
 
 - 日期：2026-11-14
-- 环境：容器 gfx-m1（ROCm 7.2.4 镜像，g++ -std=c++20 -O2；纯 CPU，未触碰 GPU）
+- 环境：容器 gfx-m1（rocm10-dev:10.1.0，g++ -std=c++20 -O2；纯 CPU；7.2.4 首测结果一致）
 - 命令：`scripts/build_run.sh`
 - 结果：`execution.log` — **8,470,774 checks, 0 failures**（5 组全 PASS）
 

@@ -58,9 +58,12 @@ __global__ void __launch_bounds__(32) soft_tma_reduce(const float4* __restrict__
 
     // Register groups are ping-ponged by DUPLICATING the loop body (ISA
     // style, cf. lds_b4's loop_a + two parity tails). A `groupA = groupB`
-    // array copy inside a dynamic loop makes the compiler spill both groups
-    // to local memory (measured ~1000x slowdown); duplicated constant-index
-    // bodies keep everything in registers.
+    // Two duplicated bodies instead of a gA=gB group copy in the dynamic
+    // loop. History: on ROCm 7.2.4 the copy form spilled both groups to
+    // local memory (~1000x slowdown). RE-MEASURED on ROCm 10.1 / clang-24:
+    // the copy form compiles spill-free now, but still runs 446 GB/s vs
+    // 507 GB/s for the duplicated bodies (+13.5%) — kept as a measured
+    // performance choice, not a workaround.
     float4 gA[BATCH], gB[BATCH];
     int issued = 0;  // quads handed to the memory system so far
     int nA = 0;      // valid entries in gA (BATCH except after the prologue)

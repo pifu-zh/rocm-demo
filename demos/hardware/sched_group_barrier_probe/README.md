@@ -1,6 +1,6 @@
 # sched_group_barrier_probe — 调度屏障内联函数的实测探针（gfx1030）
 
-**类目**: hardware · **验证级别**: HARDWARE_PASS + STATIC_ANALYSIS_PASS（RX 6950 XT / gfx1030 / ROCm 7.2.4 真机执行，2026-11-14）
+**类目**: hardware · **验证级别**: HARDWARE_PASS + STATIC_ANALYSIS_PASS（RX 6950 XT / gfx1030，7.2.4 首测 + ROCm 10.1 重测均通过，2026-11-14）
 **动机**: aiter 在 gfx950/gfx1250 的 opus kernel 里用
 `__builtin_amdgcn_sched_group_barrier(mask, count, group_id)` 做 IGLP
 共执行调度（如 `pa_mqa_logits_mxfp4_gfx950_common.cuh:476-477`、
@@ -15,12 +15,11 @@
 2. **gfx1030 可用的指令类 id**（实测编译）：`0x8`（VMEM）、`0x11`
    （VALU/ALU）、`0x18`（TRANS）、`0x28`（SALU）。aiter 在 gfx950/gfx1250
    用的 MFMA/WMMA 掩码在 RDNA2 上无对应单元。
-3. **工具链雷区（实测）**：某些混合类型双 group 模式会**段错误** LLVM
-   机器调度器（`ScheduleDAGMI::schedule`，clang-22）。崩溃集不规则：
-   `{0x11 gid0 → 0x8 gid1}` 崩、`{0x11 gid5 → 0x8 gid10}` 不崩、逆序不崩、
-   同类型双 group 不崩——这是 LLVM bug 面，不是使用规则。
-   **安全模式（实测 + 与上游一致）**：一个调度区域内所有
-   sched_group_barrier 共享同一个 group id。
+3. **工具链雷区（7.2.4 实测，10.1 已修复）**：7.2.4（clang-22）下某些
+   混合类型双 group 模式会段错误 LLVM 机器调度器（`ScheduleDAGMI::schedule`），
+   崩溃集不规则（`{0x11 gid0 → 0x8 gid1}` 崩、`{0x11 gid5 → 0x8 gid10}`
+   不崩）。**ROCm 10.1（clang-24）重测：全部 7.2.4 崩溃模式均可编译**——
+   雷区已随工具链修复消失。同 group id 的上游模式在两个工具链下均安全。
 
 ## 二、文件
 

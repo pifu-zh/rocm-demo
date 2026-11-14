@@ -2,7 +2,7 @@
 
 ## 验证等级
 
-**HARDWARE_PASS + PERFORMANCE_MEASURED**（gfx1030 / RX 6950 XT，ROCm 7.2.4，2026-11-13）
+**HARDWARE_PASS + PERFORMANCE_MEASURED**（gfx1030 / RX 6950 XT；ROCm 7.2.4 首测，10.1 重测持平，2026-11-14）
 穷举（解码 512 + 往返 256 + 编码 sweep 108 + e8m0 256×2）0 失败；MXFP4 点积界内；转换流吞吐已测。
 
 ## 原理
