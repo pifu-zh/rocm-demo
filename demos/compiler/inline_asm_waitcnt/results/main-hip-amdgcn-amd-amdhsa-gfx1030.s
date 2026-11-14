@@ -1,4 +1,4 @@
-	.amdgcn_target "amdgcn-amd-amdhsa--gfx1030"
+	.amdgcn_target "amdgcn-amd-amdhsa-unknown-gfx1030"
 	.amdhsa_code_object_version 6
 	.text
 	.protected	_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i ; -- Begin function _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i
@@ -6,7 +6,10 @@
 	.p2align	8
 	.type	_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i,@function
 _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i
+	.cfi_startproc
 ; %bb.0:
+	.cfi_escape 0x0f, 0x04, 0x30, 0x36, 0xe9, 0x02 ; CFA is 0 in private_wave aspace
+	.cfi_undefined 16
 	s_clause 0x1
 	s_load_dword s12, s[4:5], 0x10
 	s_load_dwordx4 s[8:11], s[4:5], 0x0
@@ -24,7 +27,7 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 	s_add_i32 s15, s5, s13
 	s_and_b32 vcc_lo, exec_lo, s4
 	s_cbranch_vccnz .LBB0_3
-; %bb.1:                                ; %.lr.ph
+; %bb.1:
 	s_add_i32 s4, s12, -1
 	s_min_u32 s13, s4, 3
 	s_lshl_b64 s[4:5], s[14:15], 9
@@ -50,7 +53,7 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 	buffer_store_dword v6, v2, s[0:3], 0 offen offset:4
 	buffer_store_dword v5, v2, s[0:3], 0 offen
 	s_cbranch_scc0 .LBB0_2
-.LBB0_3:                                ; %Flow126
+.LBB0_3:                                ; %Flow45
 	v_add_co_u32 v5, s4, s8, v4
 	v_add_co_ci_u32_e64 v6, null, s9, 0, s4
 	s_movk_i32 s5, 0x50
@@ -69,7 +72,7 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 	s_mov_b32 s13, 0
 	s_mov_b32 s16, s17
 	s_branch .LBB0_5
-.LBB0_4:                                ; %._crit_edge
+.LBB0_4:                                ; %.loopexit
                                         ;   in Loop: Header=BB0_5 Depth=1
 	;;#ASMSTART
 	s_waitcnt lgkmcnt(0)
@@ -97,7 +100,6 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 	ds_read_b128 v[26:29], v13 offset:1536
 	s_xor_b32 s13, s13, 1
 	s_mov_b32 s17, 4
-	s_mov_b32 vcc_lo, s4
 	s_waitcnt vmcnt(15)
 	buffer_store_dword v30, off, s[0:3], 0 offset:12
 	s_waitcnt vmcnt(14)
@@ -154,16 +156,17 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 .LBB0_5:                                ; =>This Loop Header: Depth=1
                                         ;     Child Loop BB0_11 Depth 2
 	s_sub_i32 s4, s12, s16
-	s_mov_b32 s18, -1
 	s_cmp_lt_i32 s4, 4
 	s_cselect_b32 s4, -1, 0
-	s_and_b32 s4, exec_lo, s4
-	s_mov_b32 vcc_lo, s4
+	s_and_b32 vcc_lo, exec_lo, s4
+	s_mov_b32 s4, -1
 	s_cbranch_vccnz .LBB0_8
-; %bb.6:                                ; %Flow124
+; %bb.6:                                ; %Flow43
                                         ;   in Loop: Header=BB0_5 Depth=1
-	s_andn2_b32 vcc_lo, exec_lo, s18
-	s_cbranch_vccz .LBB0_9
+	s_and_b32 s4, s4, exec_lo
+	s_cselect_b32 s4, 1, 0
+	s_cmp_lg_u32 s4, 1
+	s_cbranch_scc0 .LBB0_9
 .LBB0_7:                                ;   in Loop: Header=BB0_5 Depth=1
 	v_lshl_or_b32 v13, s13, 11, v4
 	s_cmp_eq_u32 s17, 0
@@ -173,44 +176,47 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 	;;#ASMSTART
 	s_waitcnt vmcnt(0)
 	;;#ASMEND
-	s_cbranch_execnz .LBB0_7
-.LBB0_9:                                ; %.preheader.preheader
-                                        ;   in Loop: Header=BB0_5 Depth=1
-	s_ashr_i32 s19, s16, 31
+	s_mov_b32 s4, 0
+	s_and_b32 s4, s4, exec_lo
+	s_cselect_b32 s4, 1, 0
+	s_cmp_lg_u32 s4, 1
+	s_cbranch_scc1 .LBB0_7
+.LBB0_9:                                ;   in Loop: Header=BB0_5 Depth=1
+	s_ashr_i32 s4, s16, 31
 	s_add_u32 s18, s14, s16
-	s_addc_u32 s19, s15, s19
-	s_add_i32 s20, s16, 1
+	s_addc_u32 s19, s15, s4
+	s_add_i32 s4, s16, 1
 	s_lshl_b64 s[18:19], s[18:19], 9
-	s_ashr_i32 s21, s20, 31
-	s_add_u32 s20, s14, s20
+	s_ashr_i32 s21, s4, 31
+	s_add_u32 s20, s14, s4
 	s_addc_u32 s21, s15, s21
-	v_add_co_u32 v13, vcc_lo, v5, s18
-	v_add_co_ci_u32_e64 v14, null, s19, v6, vcc_lo
+	v_add_co_u32 v13, s4, v5, s18
+	v_add_co_ci_u32_e64 v14, null, s19, v6, s4
 	s_lshl_b64 s[18:19], s[20:21], 9
 	v_mov_b32_e32 v29, s5
-	v_add_co_u32 v17, vcc_lo, v5, s18
-	s_add_i32 s18, s16, 2
-	v_add_co_ci_u32_e64 v18, null, s19, v6, vcc_lo
-	s_ashr_i32 s19, s18, 31
-	s_add_u32 s18, s14, s18
-	s_addc_u32 s19, s15, s19
-	s_add_i32 s20, s16, 3
-	s_lshl_b64 s[18:19], s[18:19], 9
-	s_ashr_i32 s21, s20, 31
-	s_add_u32 s20, s14, s20
-	s_addc_u32 s21, s15, s21
-	v_add_co_u32 v21, vcc_lo, v5, s18
-	v_add_co_ci_u32_e64 v22, null, s19, v6, vcc_lo
-	s_lshl_b64 s[18:19], s[20:21], 9
+	v_add_co_u32 v17, s4, v5, s18
+	v_add_co_ci_u32_e64 v18, null, s19, v6, s4
+	s_add_i32 s4, s16, 2
 	s_clause 0x1
 	global_load_dwordx4 v[13:16], v[13:14], off
 	global_load_dwordx4 v[17:20], v[17:18], off
-	v_add_co_u32 v25, vcc_lo, v5, s18
-	v_add_co_ci_u32_e64 v26, null, s19, v6, vcc_lo
+	s_ashr_i32 s19, s4, 31
+	s_add_u32 s18, s14, s4
+	s_addc_u32 s19, s15, s19
+	s_add_i32 s4, s16, 3
+	s_lshl_b64 s[18:19], s[18:19], 9
+	s_ashr_i32 s21, s4, 31
+	s_add_u32 s20, s14, s4
+	s_addc_u32 s21, s15, s21
+	v_add_co_u32 v21, s4, v5, s18
+	v_add_co_ci_u32_e64 v22, null, s19, v6, s4
+	s_lshl_b64 s[18:19], s[20:21], 9
+	s_add_i32 s16, s16, 4
+	v_add_co_u32 v25, s4, v5, s18
+	v_add_co_ci_u32_e64 v26, null, s19, v6, s4
 	s_clause 0x1
 	global_load_dwordx4 v[21:24], v[21:22], off
 	global_load_dwordx4 v[25:28], v[25:26], off
-	s_add_i32 s16, s16, 4
 	v_mov_b32_e32 v30, s8
 	v_mov_b32_e32 v31, s9
 	s_waitcnt vmcnt(3)
@@ -239,17 +245,17 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 	v_lshl_or_b32 v13, s13, 11, v4
 	s_cmp_eq_u32 s17, 0
 	s_cbranch_scc1 .LBB0_4
-.LBB0_10:                               ; %.lr.ph68.preheader
+.LBB0_10:                               ; %.preheader.preheader
                                         ;   in Loop: Header=BB0_5 Depth=1
 	v_mov_b32_e32 v14, v13
-	s_mov_b32 s18, 0
+	s_mov_b32 s4, 0
 	.p2align	6
-.LBB0_11:                               ; %.lr.ph68
+.LBB0_11:                               ; %.preheader
                                         ;   Parent Loop BB0_5 Depth=1
                                         ; =>  This Inner Loop Header: Depth=2
-	v_mov_b32_e32 v18, s18
+	v_mov_b32_e32 v18, s4
 	s_add_i32 s17, s17, -1
-	s_add_i32 s18, s18, 16
+	s_add_i32 s4, s4, 16
 	s_cmp_eq_u32 s17, 0
 	s_clause 0x3
 	buffer_load_dword v15, v18, s[0:3], 0 offen
@@ -267,6 +273,9 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 	s_addc_u32 s5, s11, s5
 	global_store_dwordx4 v4, v[0:3], s[4:5]
 	s_endpgm
+.Lfunc_end0:
+	.size	_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i, .Lfunc_end0-_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i
+	.cfi_endproc
 	.section	.rodata,"a",@progbits
 	.p2align	6, 0x0
 	.amdhsa_kernel _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i
@@ -313,19 +322,17 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 		.amdhsa_exception_int_div_zero 0
 	.end_amdhsa_kernel
 	.text
-.Lfunc_end0:
-	.size	_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i, .Lfunc_end0-_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i
                                         ; -- End function
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.num_vgpr, 46
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.num_agpr, 0
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.numbered_sgpr, 22
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.num_named_barrier, 0
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.private_seg_size, 144
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.uses_vcc, 1
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.uses_flat_scratch, 0
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.has_dyn_sized_stack, 0
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.has_recursion, 0
-	.set _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.has_indirect_call, 0
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.num_vgpr, 46
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.num_agpr, 0
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.numbered_sgpr, 22
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.num_named_barrier, 0
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.private_seg_size, 144
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.uses_vcc, 1
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.uses_flat_scratch, 0
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.has_dyn_sized_stack, 0
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.has_recursion, 0
+	.set .L_Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i.has_indirect_call, 0
 	.section	.AMDGPU.csdata,"",@progbits
 ; Kernel info:
 ; codeLenInByte = 1384
@@ -356,18 +363,19 @@ _Z19partial_drain_probePK15HIP_vector_typeIfLj4EEPS0_i: ; @_Z19partial_drain_pro
 	.set amdgpu.max_num_vgpr, 0
 	.set amdgpu.max_num_agpr, 0
 	.set amdgpu.max_num_sgpr, 0
+	.set amdgpu.max_num_named_barrier, 0
 	.text
-	.type	__hip_cuid_36b90e9d1999e6cd,@object ; @__hip_cuid_36b90e9d1999e6cd
+	.type	__hip_cuid_64bcea6021c5e6b9,@object ; @__hip_cuid_64bcea6021c5e6b9
 	.section	.bss,"aw",@nobits
-	.globl	__hip_cuid_36b90e9d1999e6cd
-__hip_cuid_36b90e9d1999e6cd:
+	.globl	__hip_cuid_64bcea6021c5e6b9
+__hip_cuid_64bcea6021c5e6b9:
 	.byte	0                               ; 0x0
-	.size	__hip_cuid_36b90e9d1999e6cd, 1
+	.size	__hip_cuid_64bcea6021c5e6b9, 1
 
-	.ident	"AMD clang version 22.0.0git (https://github.com/RadeonOpenCompute/llvm-project roc-7.2.4 26084 f58b06dce1f9c15707c5f808fd002e18c2accf7e)"
+	.ident	"AMD clang version 24.0.0git (https://github.com/ROCm/llvm-project.git d6f6cb691863e9258034ab48c1dfce21689d5606)"
 	.section	".note.GNU-stack","",@progbits
 	.addrsig
-	.addrsig_sym __hip_cuid_36b90e9d1999e6cd
+	.addrsig_sym __hip_cuid_64bcea6021c5e6b9
 	.amdgpu_metadata
 ---
 amdhsa.kernels:
@@ -404,7 +412,7 @@ amdhsa.kernels:
     .vgpr_spill_count: 0
     .wavefront_size: 32
     .workgroup_processor_mode: 1
-amdhsa.target:   amdgcn-amd-amdhsa--gfx1030
+amdhsa.target:   amdgcn-amd-amdhsa-unknown-gfx1030
 amdhsa.version:
   - 1
   - 2

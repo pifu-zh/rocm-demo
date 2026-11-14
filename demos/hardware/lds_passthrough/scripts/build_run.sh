@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 HIPCC=${HIPCC:-hipcc}
-CLANG=${CLANG:-/opt/rocm-7.2.4/lib/llvm/bin/clang}
+CLANG=${CLANG:-/opt/rocm/lib/llvm/bin/clang}
 ARCH=${ARCH:-gfx1030}
 "$CLANG" -x assembler -target amdgcn-amd-amdhsa -mcpu="$ARCH" \
     src/lds_probe_pipeline.s -o lds_probe.co

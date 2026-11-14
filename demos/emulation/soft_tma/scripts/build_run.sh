@@ -5,7 +5,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 HIPCC=${HIPCC:-hipcc}
-CLANG=${CLANG:-/opt/rocm-7.2.4/lib/llvm/bin/clang}
+CLANG=${CLANG:-/opt/rocm/lib/llvm/bin/clang}
 ARCH=${ARCH:-gfx1030}
 REPO_ROOT=$(cd ../../.. && pwd)
 

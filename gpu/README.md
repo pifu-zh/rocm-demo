@@ -2,11 +2,15 @@
 
 本目录的 demo 不进 CMake：它们需要 GPU 与 ROCm 工具链，走独立构建脚本，
 与 core（纯 CPU 参考库）分开。宿主机无 ROCm，全部在容器内构建运行
-（镜像 `docker.m.daocloud.io/rocm/dev-ubuntu-24.04:7.2.4-complete`，
-本机容器实例 `gfx-m1`，GPU RX 6950 XT 直通）。
+（镜像 `rocm10-dev:10.1.0` =
+`docker.m.daocloud.io/rocm/dev-ubuntu-24.04:10.1.0-full`，GPU RX 6950 XT
+直通；M2 时代的 7.2.4 镜像与 gfx-m1 实例 2026-11-14 退役，各 demo
+RESULTS 中的 gfx-m1 字样为当时的测量环境记录）。
 
 ```bash
-docker exec gfx-m1 bash /home/zhuo/workspace/src/rocm-demo/gpu/run_gfx1030.sh
+docker run --rm --device=/dev/kfd --device=/dev/dri --group-add 44 --group-add 989 \
+    -v /home/zhuo:/home/zhuo rocm10-dev:10.1.0 \
+    bash /home/zhuo/workspace/src/rocm-demo/gpu/run_gfx1030.sh
 ```
 
 ## Demo 一览

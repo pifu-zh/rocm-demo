@@ -13,5 +13,13 @@
    部分排空的超集）——因此 ISA 产物中的 vmcnt 指令是**该 asm 必要且存活**
    的证据，而非装饰。部分排空本身的必要性由 soft_tma 的分级吞吐背书。
 
+跨版本复核（2026-11-14，ROCm 10.1 / AMD clang 24，同卡复跑全 PASS）：
+真后端 ISA 仍为 **30 处 s_waitcnt**，注入的 `vmcnt(4)` 存活（×2），soft_tma
+吞吐同步复现（C++ B=4 508.3 GB/s vs 7.2.4 的 508.1）——结论跨 7.x→10.x 成立。
+取证方法变更：10.x 的 hipcc `-S`/`--save-temps` 产出 **IR 文本而非 ISA**
+（clang 24 移除 .s 中间阶段与 llc），脚本改为"设备 IR → `clang -x ir` 后端"
+两步法捕获。顺带实测：10.1 llvm 工具集无 llc；clang-offload-bundler 对
+错误 target 名段错误。
+
 开发中修正的两个测试自伤：host 期望曾写成链式前缀和 / 分量独立累加的
 混合错误——位级对比的期望必须逐分量镜像 kernel 的真实累加序。

@@ -3,13 +3,14 @@
 # Assemble the ISA reference and run the toolchain probe on gfx1030.
 # The soft fp8/fp4/tma demos moved to demos/emulation/<name>/scripts/build_run.sh.
 # Run INSIDE the ROCm container (host machines in this lab keep no ROCm):
-#   docker start gfx-m1   # or: docker run --device=/dev/kfd --device=/dev/dri ...
-#   docker exec gfx-m1 bash /home/zhuo/workspace/src/rocm-demo/gpu/run_gfx1030.sh
+#   docker run --rm --device=/dev/kfd --device=/dev/dri --group-add 44 --group-add 989 \
+#       -v /home/zhuo:/home/zhuo rocm10-dev:10.1.0 \
+#       bash /home/zhuo/workspace/src/rocm-demo/gpu/run_gfx1030.sh
 set -euo pipefail
 cd "$(dirname "$0")"
 
 HIPCC=${HIPCC:-hipcc}
-CLANG=${CLANG:-/opt/rocm-7.2.4/lib/llvm/bin/clang}
+CLANG=${CLANG:-/opt/rocm/lib/llvm/bin/clang}
 ARCH=${ARCH:-gfx1030}
 
 echo "=== assemble soft_tma_pipeline.s -> .co ==="
