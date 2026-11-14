@@ -118,6 +118,7 @@ that a crashed holder's lock is broken and its work redone.
 | algorithm | `demos/algorithm/causal_conv1d_update` | REFERENCE_PASS（M4：Mamba 式滑窗状态机制——两遍守卫式搬移/环形游标/连续批处理 377 checks；双实现互证；x_vals 种子必须内联 pass-2 的承重细节实测） |
 | algorithm | `demos/algorithm/dsv4_hadamard_rotate_quant` | REFERENCE_PASS（M4：Hadamard 蝴蝶旋转 vs 显式矩阵 oracle（O(n log n) vs O(n²) 对撞）+ FP4/E8M0 scale 契约 + 能量守恒不变量 736 checks） |
 | algorithm | `demos/algorithm/gdn_prefill_fwd_h` | REFERENCE_PASS（M4：分块门控 delta-rule 递推 + 进入态快照链 + 尾部钳制 + 槽间接 49,157 checks；矩阵/逐对双计划互证；g 的 chunk 内重置契约钉死） |
+| algorithm | `demos/algorithm/radix_topk_select` | REFERENCE_PASS（M4：fp32 反序 twiddle + 多轮基数选择 + 平局后填规则 + 分档调度阈值 149 checks；key 升序=值降序的反直觉方向实测） |
 
 gpu/ 仍保留：`soft_tma_pipeline.s`（ISA 参照实现，被
 `demos/emulation/soft_tma` 消费）与 `toolchain.hip`（编译器接口探针 +
