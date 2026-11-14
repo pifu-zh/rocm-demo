@@ -102,6 +102,7 @@ that a crashed holder's lock is broken and its work redone.
 | emulation | `demos/emulation/soft_fp8` | HARDWARE_PASS + PERFORMANCE_MEASURED（219,488 穷举 0 失败；流 477-533 GB/s） |
 | emulation | `demos/emulation/soft_fp4` | HARDWARE_PASS + PERFORMANCE_MEASURED（穷举 0 失败；MXFP4 SF 点积界内） |
 | emulation | `demos/emulation/warp_sync` | HARDWARE_PASS + PERFORMANCE_MEASURED（四原语 PASS；mbarrier 230.6 ns = 1.6× native） |
+| emulation | `demos/emulation/soft_tx_mbarrier` | HARDWARE_PASS（M4：expect_tx 字节门控闭环——两实验室共同开放缺口的 gfx1030 软替代；5 组 PASS 1.96× plain；clang-24 llvm.assume 删 spin + 软件流水线跨原子重排两个工具链发现） |
 | compiler | `demos/compiler/inline_asm_waitcnt` | HARDWARE_PASS + STATIC_ANALYSIS_PASS（IR/ISA 产物在 results/） |
 | hardware | `demos/hardware/lds_passthrough` | HARDWARE_PASS（32 lane 位级；V#/m0/单波约束实测） |
 | hardware | `demos/hardware/ds_swizzle_probe` | HARDWARE_PASS（M3：BITMASK_PERM=src(i)^N 实测；gfx1030 编译 wave32 发现——xor32 不可达、shfl_xor 缺省宽度陷阱；builtin 需 union 位 punning 实测） |
