@@ -1,0 +1,6 @@
+1. xor-butterfly reduce (ds_swizzle xor 1/2/4; shfl_xor 16/32): PASS
+2. decode step (lane decomposition + butterflies vs naive): PASS
+3. fp32 state-pool swizzle codec [slot][HV][K/4][V][4] round trip: PASS
+4. T-step split chain (register state + swizzled pool vs naive): PASS
+5. LDS bank padding (idx + idx/CHUNK, stride 33): PASS
+gdr_decode_chain: 8470774 checks, 0 failures -> PASS
