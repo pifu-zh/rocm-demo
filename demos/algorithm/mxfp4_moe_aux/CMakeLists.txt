@@ -8,5 +8,14 @@ add_executable(mxfp4_moe_aux src/mxfp4_moe_aux.cpp)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(mxfp4_moe_aux PRIVATE -Wall -Wextra)
 endif()
+
+# Three-way E2M1 encoder cross-verification (aiter FlyDSL / cuda-oxide /
+# lab) — see tests/e2m1_crosscheck.cpp header for the expected divergence
+# classes.
+add_executable(e2m1_crosscheck tests/e2m1_crosscheck.cpp)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(e2m1_crosscheck PRIVATE -Wall -Wextra)
+endif()
 enable_testing()
 add_test(NAME mxfp4_moe_aux COMMAND mxfp4_moe_aux)
+add_test(NAME e2m1_crosscheck COMMAND e2m1_crosscheck)

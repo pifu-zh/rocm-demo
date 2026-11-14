@@ -1,0 +1,10 @@
+  nan divergence x=-nan (ff802000): aiter f oxide f lab 7
+  nan divergence x=-nan (ff804000): aiter f oxide f lab 7
+  nan divergence x=-nan (ff806000): aiter f oxide f lab 7
+  nan divergence x=-nan (ff808000): aiter f oxide f lab 7
+  nan divergence x=-nan (ff80a000): aiter f oxide f lab 7
+  nan divergence x=-nan (ff80c000): aiter f oxide f lab 7
+  nan divergence x=-nan (ff80e000): aiter f oxide f lab 7
+  nan divergence x=-nan (ff810000): aiter f oxide f lab 7
+crosscheck: finite 271844/271844 three-way agree; NaN 2060 checked (T1==T2 2060, T1==T3 1030 — lab NaN policy = positive 0x7)
+e2m1_crosscheck: PASS

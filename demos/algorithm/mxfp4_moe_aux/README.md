@@ -92,7 +92,7 @@ aiter 把这三件事做成 mx 大小的 HIP kernel（几百行 .cuh），但它
 | 独立实现 | 单 TU 640 行，不链接 aiter_ref（独立性 = 特性） |
 | 最小依赖 | C++20；CPU-only |
 | Reference | 上游头文件逐条对应；DPP 归 `warp_sync`、硬件 cvt 归 `soft_fp4` |
-| Correctness Test | 6 组 8237 checks（见下） |
+| Correctness Test | 6 组 8237 checks + 跨验证 e2m1_crosscheck（三方 271,844 有限值逐位一致，见下） |
 | Build Script | `scripts/build_run.sh`（g++ 直编 + 日志落 results/；CMakeLists 亦可 ctest） |
 | Inspection | 变体互证（1）+ 逆置换/multiset（2）+ 契约/钉子（3）；ISA 层归 compiler/hardware 类 demo |
 | Hardware Matrix | 上游目标 gfx950（MI300）cvt + ROCm 7.x；本 demo CPU 主机参考，未声明任何 HIP 执行 |
@@ -108,6 +108,7 @@ aiter 把这三件事做成 mx 大小的 HIP kernel（几百行 .cuh），但它
 | 3 | 量化契约：scale ∈ [0,254]、`err ≤ 3qs`、11 个 RNE 钉子 | 独立契约测试 |
 | 4a | scatter_reduce bf16 vs 独立 oracle | bf16 域逐位 |
 | 4b | scatter_reduce mxfp4 vs 量化域 oracle | 逐位精确（配对 3 使用） |
+| cross | 三方 E2M1 编码器（aiter FlyDSL / cuda-oxide / lab）在 f16 全格点 + 8 边界 ±512 ulp + 非正规 + NaN 上对撞 | 有限值三方逐位一致；NaN 策略分歧已记录（lab 负 NaN → 正 0x7） |
 
 ## 六、复现
 

@@ -7,4 +7,6 @@ cd "$(dirname "$0")/.."
 CXX=${CXX:-g++}
 mkdir -p results
 $CXX -std=c++20 -O2 -Wall -Wextra src/mxfp4_moe_aux.cpp -o mxfp4_moe_aux
+$CXX -std=c++20 -O2 -Wall -Wextra tests/e2m1_crosscheck.cpp -o e2m1_crosscheck
 ./mxfp4_moe_aux | tee results/execution.log
+./e2m1_crosscheck | tee results/crosscheck.log
