@@ -104,6 +104,8 @@ that a crashed holder's lock is broken and its work redone.
 | emulation | `demos/emulation/warp_sync` | HARDWARE_PASS + PERFORMANCE_MEASURED（四原语 PASS；mbarrier 230.6 ns = 1.6× native） |
 | emulation | `demos/emulation/soft_tx_mbarrier` | HARDWARE_PASS（M4：expect_tx 字节门控闭环——两实验室共同开放缺口的 gfx1030 软替代；5 组 PASS 1.96× plain；clang-24 llvm.assume 删 spin + 软件流水线跨原子重排两个工具链发现） |
 | compiler | `demos/compiler/inline_asm_waitcnt` | HARDWARE_PASS + STATIC_ANALYSIS_PASS（IR/ISA 产物在 results/） |
+| compiler/DSL | `demos/compiler/opus_dsl_host` | SOURCE_VERIFIED + REFERENCE_PASS（M4：opus DSL 本体首次一等剥离——vendor 单头 opus_host_slice.hpp，slice/索引代数 52 checks；clang-only：`__make_integer_seq`/`__type_pack_element` 内建，g++ 无法解析） |
+| compiler/DSL | `demos/compiler/binary_op_dispatch` | SOURCE_VERIFIED + REFERENCE_PASS（M5：二元算子形状分类器 + 实例化矩阵梯 19 checks；非 3-D 中维广播 fallback；2 ops × 3 dtype 对 emitter） |
 | hardware | `demos/hardware/lds_passthrough` | HARDWARE_PASS（32 lane 位级；V#/m0/单波约束实测） |
 | hardware | `demos/hardware/ds_swizzle_probe` | HARDWARE_PASS（M3：BITMASK_PERM=src(i)^N 实测；gfx1030 编译 wave32 发现——xor32 不可达、shfl_xor 缺省宽度陷阱；builtin 需 union 位 punning 实测） |
 | hardware | `demos/hardware/v_dot2_probe` | HARDWARE_PASS（M3：gfx1030 有 v_dot2c_f32_f16 无 bf16 dot2（dot9 独占）；f32 累加模型 1M 步位级精确；dot2=2.0-2.2× fma 实测） |

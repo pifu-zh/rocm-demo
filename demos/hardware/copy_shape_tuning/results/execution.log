@@ -1,55 +1,55 @@
   running b1024 v4 e1      grid=20480 block=1024
-  b1024 v4 e1         498.6 GB/s  (grid 20480 x 1024)
+  b1024 v4 e1         498.3 GB/s  (grid 20480 x 1024)
   running b512 v4 e1       grid=40960 block=512
-  b512 v4 e1          499.2 GB/s  (grid 40960 x 512)
+  b512 v4 e1          499.8 GB/s  (grid 40960 x 512)
   running b256 v4 e1       grid=81920 block=256
-  b256 v4 e1          499.2 GB/s  (grid 81920 x 256)
+  b256 v4 e1          499.1 GB/s  (grid 81920 x 256)
   running b1024 v4 e2      grid=10240 block=1024
-  b1024 v4 e2         310.3 GB/s  (grid 10240 x 1024)
+  b1024 v4 e2         310.5 GB/s  (grid 10240 x 1024)
   running b512 v4 e2       grid=20480 block=512
-  b512 v4 e2          321.0 GB/s  (grid 20480 x 512)
+  b512 v4 e2          321.4 GB/s  (grid 20480 x 512)
   running b256 v4 e2       grid=40960 block=256
-  b256 v4 e2          345.5 GB/s  (grid 40960 x 256)
+  b256 v4 e2          344.4 GB/s  (grid 40960 x 256)
   running b1024 v4 e4      grid=5120 block=1024
-  b1024 v4 e4         236.3 GB/s  (grid 5120 x 1024)
+  b1024 v4 e4         238.2 GB/s  (grid 5120 x 1024)
   running b512 v4 e4       grid=10240 block=512
-  b512 v4 e4          239.2 GB/s  (grid 10240 x 512)
+  b512 v4 e4          238.4 GB/s  (grid 10240 x 512)
   running b256 v4 e4       grid=20480 block=256
-  b256 v4 e4          235.7 GB/s  (grid 20480 x 256)
+  b256 v4 e4          236.7 GB/s  (grid 20480 x 256)
   running b512 v2 e4       grid=20480 block=512
-  b512 v2 e4          181.1 GB/s  (grid 20480 x 512)
+  b512 v2 e4          181.5 GB/s  (grid 20480 x 512)
   running b256 v2 e4       grid=40960 block=256
-  b256 v2 e4          199.9 GB/s  (grid 40960 x 256)
+  b256 v2 e4          190.5 GB/s  (grid 40960 x 256)
   running b1024 v1 e8      grid=10240 block=1024
-  b1024 v1 e8         103.6 GB/s  (grid 10240 x 1024)
+  b1024 v1 e8         103.4 GB/s  (grid 10240 x 1024)
   running b512 v1 e8       grid=20480 block=512
-  b512 v1 e8          104.3 GB/s  (grid 20480 x 512)
+  b512 v1 e8          104.1 GB/s  (grid 20480 x 512)
   running b256 v1 e8       grid=40960 block=256
-  b256 v1 e8          120.8 GB/s  (grid 40960 x 256)
+  b256 v1 e8          117.8 GB/s  (grid 40960 x 256)
   running b64 v4 e1        grid=327680 block=64
-  b64 v4 e1           495.5 GB/s  (grid 327680 x 64)
+  b64 v4 e1           495.8 GB/s  (grid 327680 x 64)
   running b128 v4 e1       grid=163840 block=128
   b128 v4 e1          495.4 GB/s  (grid 163840 x 128)
   running b128 v4 e2       grid=81920 block=128
-  b128 v4 e2          358.1 GB/s  (grid 81920 x 128)
+  b128 v4 e2          368.9 GB/s  (grid 81920 x 128)
   running b128 v4 e4       grid=40960 block=128
-  b128 v4 e4          235.7 GB/s  (grid 40960 x 128)
-BEST: b512 v4 e1 499.2 GB/s
-     499.2  b512 v4 e1
-     499.2  b256 v4 e1
-     498.6  b1024 v4 e1
-     495.5  b64 v4 e1
+  b128 v4 e4          233.8 GB/s  (grid 40960 x 128)
+BEST: b512 v4 e1 499.8 GB/s
+     499.8  b512 v4 e1
+     499.1  b256 v4 e1
+     498.3  b1024 v4 e1
+     495.8  b64 v4 e1
      495.4  b128 v4 e1
-     358.1  b128 v4 e2
-     345.5  b256 v4 e2
-     321.0  b512 v4 e2
-     310.3  b1024 v4 e2
-     239.2  b512 v4 e4
-     236.3  b1024 v4 e4
-     235.7  b128 v4 e4
-     235.7  b256 v4 e4
-     199.9  b256 v2 e4
-     181.1  b512 v2 e4
-     120.8  b256 v1 e8
-     104.3  b512 v1 e8
-     103.6  b1024 v1 e8
+     368.9  b128 v4 e2
+     344.4  b256 v4 e2
+     321.4  b512 v4 e2
+     310.5  b1024 v4 e2
+     238.4  b512 v4 e4
+     238.2  b1024 v4 e4
+     236.7  b256 v4 e4
+     233.8  b128 v4 e4
+     190.5  b256 v2 e4
+     181.5  b512 v2 e4
+     117.8  b256 v1 e8
+     104.1  b512 v1 e8
+     103.4  b1024 v1 e8
