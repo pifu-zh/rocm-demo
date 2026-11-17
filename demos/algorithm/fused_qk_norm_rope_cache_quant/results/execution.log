@@ -1,0 +1,2 @@
+  sweep: 36 rows compared bitwise
+fused_qk_norm_rope_cache_quant: 110 checks, 0 failures -> PASS
