@@ -1,0 +1,2 @@
+  sweep: 5 rows, split pipeline vs flat reference
+opus_mla_decode_splitkv: 32 checks, 0 failures -> PASS
