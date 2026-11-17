@@ -1,0 +1,2 @@
+  sweep: 240 rows, 160 fallbacks exercised
+topk_per_row_sampled: 86716 checks, 0 failures -> PASS
