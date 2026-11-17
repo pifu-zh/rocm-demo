@@ -1,0 +1,5 @@
+0. schedule decode (7 pids, 170 tokens covered): PASS
+1. chunked vs flat bitwise (T=170, dim 48) + tail: PASS
+2. pad slot skip (pad untouched, non-pad intact): PASS
+3. short sequences (seqlen 1/2 state slide): PASS
+causal_conv1d_fwd_split_qkv: 9 checks, 0 failures -> PASS
