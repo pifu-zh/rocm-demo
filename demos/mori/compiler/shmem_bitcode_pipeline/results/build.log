@@ -1,0 +1,7 @@
+/opt/rocm/llvm/bin/clang-offload-bundler: error: Can't find bundles for hipv4-amdgcn-amd-amdhsa--gfx1030
+/opt/rocm/llvm/bin/clang-offload-bundler: error: Can't find bundles for hipv4-amdgcn-amd-amdhsa--gfx1030
+/opt/rocm/llvm/bin/clang-offload-bundler: error: Can't find bundles for hipv4-amdgcn-amd-amdhsa--gfx1030
+/opt/rocm/llvm/bin/clang-offload-bundler: error: Can't find bundles for hip-amdgcn-amd-amdhsa--gfx1030
+/opt/rocm/llvm/bin/clang-offload-bundler: error: Can't find bundles for hip-amdgcn-amd-amdhsa--gfx1030
+/opt/rocm/llvm/bin/clang-offload-bundler: error: Can't find bundles for hip-amdgcn-amd-amdhsa--gfx1030
+/opt/rocm/llvm/bin/clang-offload-bundler: error: Can't find bundles for hipv4-amdgcn-amd-amdhsa--gfx1030
