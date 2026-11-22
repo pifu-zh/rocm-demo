@@ -6,3 +6,6 @@ add_executable(jit_content_cache src/main.cpp)
 target_include_directories(jit_content_cache PRIVATE src)
 target_compile_options(jit_content_cache PRIVATE -O2 -std=c++20)
 target_link_libraries(jit_content_cache PRIVATE hip::host)
+
+enable_testing()
+add_test(NAME jit_content_cache COMMAND jit_content_cache)

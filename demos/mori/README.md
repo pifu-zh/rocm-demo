@@ -13,7 +13,7 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 - GPU Demo 在容器 `gfx-m1`（rocm10-dev:10.1.0，HIP 7.16.26385，AMD clang 24.0）内构建运行，目标 **gfx1030**（RX 6950 XT，RDNA2，wave32）——注意 mori 官方不支持 gfx1030（构建层只认 gfx942/950/1250），本集合验证的是"提取出的机制"而非 mori 全栈。
 - 纯 CPU Demo（ras_heartbeat、io_sim_model）容器内构建，无 GPU 参与。
 
-## Demo 一览（13 个，全部 HARDWARE_PASS / REFERENCE_PASS 或更高）
+## Demo 一览（15 个，全部 HARDWARE_PASS / REFERENCE_PASS 或更高）
 
 ### algorithm/
 | Demo | 原理 | 等级 |
@@ -31,6 +31,7 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 |---|---|---|
 | `p2p_cas_atomic` | P2P 原子的 CAS-loop 软件仿真与硬件原子 6/6 对拍（争用 85,000× 已诚实记录） | HARDWARE_PASS |
 | `io_sim_model` | MORI-IO sim 后端复现：控制面真实+数据面模型（t=b/BW+n·seg+op+lat），纯 CPU 10/10 | REFERENCE_PASS |
+| `umbp_sim_model` | UMBP 排队模型：channel_capacity FIFO（private 可 overlap）+ size_term 对数项 + SSD 半服务，纯 CPU 13/13 | REFERENCE_PASS |
 
 ### hardware/
 | Demo | 原理 | 等级 |
@@ -38,6 +39,7 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 | `proxy_ring_publish_order` | GPU→CPU 发布协议（payload→threadfence_system→status）：819k 命令零撕裂；RDNA2 fence = `s_waitcnt_vscnt` 实测 | HARDWARE_PASS + STATIC_ANALYSIS_PASS |
 | `ipc_symmetric_heap` | 单卡双进程 IPC 对称堆全链路：映射/直写零撕裂/跨进程 CAS/epoch barrier | HARDWARE_PASS |
 | `vmm_flat_va_probe` | VMM flat-VA + 跨进程 FD 互映射（CCO LSA 物理前提）；host 裸指针写 VMM 页=SEGV 纪律实证 | HARDWARE_PASS(probe) |
+| `lsa_flat_va` | CCO LSA 完整端到端：peer_va 公式寻址双向 put（内核校验 0/4096）+ epoch barrier 双进程 rendezvous；SCM_RIGHTS FD 须显式 import | HARDWARE_PASS |
 | `sdma_user_queue_probe` | KFD 用户态 SDMA 队列创建：4 引擎×8 队列全 SUCCESS | HARDWARE_PASS(probe) |
 | `sdma5_copy_experiment` | SDMA5 COPY_LINEAR 包执行：gfx9 布局跨代兼容，10/10 NT 校验；**SDMA 写绕过 L2 → NT load 强制**；ATOMIC 不执行/NOP 卡死（诚实记录） | HARDWARE_PASS(COPY) |
 

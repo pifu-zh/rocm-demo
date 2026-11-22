@@ -1,0 +1,14 @@
+T1 size_term=log2(4096)=12                           PASS
+T1 overhead formula                                  PASS
+T1 private_ns formula                                PASS
+T1 service_ns formula                                PASS
+T1 finish=max(private, channel)                      PASS
+T2 channel FIFO: service serialized, private overlapped PASS
+T3 idle channel: finish=private only                 PASS
+T4 size_term uses bytes/copies                       PASS
+T4 overhead scales with copies                       PASS
+T5 unsynced SSD read: service=bytes-only             PASS
+T5 write/mixed keeps full service cost               PASS
+T6 zero bytes: no byte cost, overhead only           PASS
+T6 shared path sums service costs                    PASS
+ALL PASS

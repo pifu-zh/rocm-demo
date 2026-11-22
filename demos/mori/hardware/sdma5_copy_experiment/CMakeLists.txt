@@ -9,3 +9,6 @@ target_link_libraries(sdma5_copy_experiment PRIVATE
   /opt/rocm/core-10.1/lib/rocm_sysdeps/lib/librocm_sysdeps_drm.so.2
   /usr/lib/x86_64-linux-gnu/libnuma.so.1 pthread rt)
 target_compile_options(sdma5_copy_experiment PRIVATE -O2)
+
+enable_testing()
+add_test(NAME sdma5_copy_experiment COMMAND sdma5_copy_experiment)
