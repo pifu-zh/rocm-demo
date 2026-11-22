@@ -83,6 +83,7 @@ demos/hardware/sdma5_copy_experiment/scripts/build_run.sh   # 容器内
 |---|---|
 | **gfx1030 + ROCm 7.16（本机）** | COPY 族 ✅ 全过（含 2MB）；ATOMIC ❌ 两种编码不执行；NOP ⚠️ 卡死引擎 |
 | gfx942/950（mori 官方） | anvil 全功能（含 ATOMIC signal 闭环） |
+| **ctest 复跑敏感性** | NT 校验依赖流量驱逐协议：GPU 空闲时稳定通过（连续 3 次），与其它 GPU demo 背靠背连跑时偶发抖动——复跑请独占 GPU |
 | gfx1250 | mori 注释：仍用 gfx9 布局（无 npd/scope 位） |
 
 ## 8. Execution Result
