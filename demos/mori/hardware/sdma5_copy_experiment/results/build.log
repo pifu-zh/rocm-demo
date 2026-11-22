@@ -1,0 +1,6 @@
+-- HIP: Using hipcc from relative path: /opt/rocm/bin/hipcc
+-- HIP_PLATFORM using hip_HIPCONFIG_EXECUTABLE: amd
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/zhuo/workspace/src/mori/demos/hardware/sdma5_copy_experiment/build
+ninja: no work to do.

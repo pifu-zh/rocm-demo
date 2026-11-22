@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.21)
+project(load_once_fanout LANGUAGES HIP CXX)
+find_package(HIP REQUIRED)
+add_executable(load_once_fanout src/load_once_fanout.hip)
+target_compile_options(load_once_fanout PRIVATE -O2 -std=c++20)

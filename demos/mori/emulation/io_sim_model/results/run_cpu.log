@@ -1,0 +1,11 @@
+T1 latency model 1GB@1GB/s             PASS
+T1 latency model 512B x3 segments      PASS
+T2 per-direction FIFO queuing          PASS
+T3 time_scale acceleration             PASS
+T4 catalog mi355x-xgmi 61.4GB/s        PASS
+T4 catalog pollara400-rdma             PASS
+T5 in-range transfer succeeds          PASS
+T5 out-of-range → op failed + local dead-view PASS
+T5 PeerFailureEvent consumed           PASS
+T6 sub-region view of big alloc        PASS
+failures=0 -> ALL PASS

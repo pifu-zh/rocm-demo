@@ -1,0 +1,8 @@
+device=gfx1030 warpSize=32 CU=40
+nttp entry=copy_v16_nt memcmp=PASS
+nttp entry=copy_v8_nt memcmp=PASS
+nttp entry=copy_v16 memcmp=PASS
+nttp entry=copy_v4 memcmp=PASS
+rt    entry=copy_rt_v16_nt memcmp=PASS
+timing(信息性): nttp_v16u4=0.035ms (896 GB/s)  rt_v16_nt=0.020ms (1598 GB/s)
+ALL PASS

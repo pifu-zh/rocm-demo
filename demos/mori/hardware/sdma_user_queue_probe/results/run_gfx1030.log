@@ -1,0 +1,11 @@
+P1 hsaKmtOpenKFD: SUCCESS
+P1 hsaKmtAcquireSystemProperties: SUCCESS (numNodes=2)
+P1 GPU node 1 (KFDGpuID=61356): NumSdmaEngines=4 NumSdmaXgmiEngines=0 NumSdmaQueuesPerEngine=8 NumCpQueues=8
+P2 hsaKmtAllocMemory(256KB, NonPaged|Execute|Uncached): SUCCESS (0x7a19aef00000)
+P2 hsaKmtMapMemoryToGPU: SUCCESS
+P2 hsaKmtCreateQueueExt(SDMA_BY_ENG_ID, engine=0): SUCCESS [queueId=2935230464 wptr=0x7a19aef41008 doorbell=0x7a19aeefa800 rptr=0x7a19aef41010] P3 pointers-accessible=y [destroyed]
+P2 hsaKmtCreateQueueExt(SDMA_BY_ENG_ID, engine=1): SUCCESS [queueId=2935230464 wptr=0x7a19aef41008 doorbell=0x7a19aeefa850 rptr=0x7a19aef41010] P3 pointers-accessible=y [destroyed]
+P2 hsaKmtCreateQueueExt(SDMA_BY_ENG_ID, engine=2): SUCCESS [queueId=2935230464 wptr=0x7a19aef41008 doorbell=0x7a19aeefa8a0 rptr=0x7a19aef41010] P3 pointers-accessible=y [destroyed]
+P2 hsaKmtCreateQueueExt(SDMA_BY_ENG_ID, engine=3): SUCCESS [queueId=2935230464 wptr=0x7a19aef41008 doorbell=0x7a19aeefa8f0 rptr=0x7a19aef41010] P3 pointers-accessible=y [destroyed]
+PROBE CONCLUSION: 用户态 SDMA 队列可创建（P1-P3 通过）——
+  下一步：gfx1030 SDMA5 包格式适配实验（COPY_LINEAR 布局待验证）

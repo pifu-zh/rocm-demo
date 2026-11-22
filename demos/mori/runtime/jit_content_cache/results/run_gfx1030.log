@@ -1,0 +1,8 @@
+device=gfx1030 warpSize=32
+cfg{b=16,w=8} dir=kernel.reduction_b16p8.26c3736a1480edd878e177d1 [compiled]
+  result=131072.0000 ref=131072.0000 -> PASS
+cfg{b=32,w=4} dir=kernel.reduction_b32p4.c2456bd63aed4ebfe85f4ea6 [compiled]
+  result=131072.0000 ref=131072.0000 -> PASS
+cfg{b=16,w=8} dir=kernel.reduction_b16p8.26c3736a1480edd878e177d1 [cache-hit]
+  result=131072.0000 ref=131072.0000 -> PASS
+ALL PASS

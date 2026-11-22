@@ -1,0 +1,12 @@
+[child] device=gfx1030
+[child] T1 hipIpcOpenMemHandle OK remote=0x7ee60c200000（单卡双进程 IPC 映射可用）
+[child] T2 wrote 4096 words via IPC-mapped remote + release-signal
+[child] T3 CAS(0->1) launched on IPC memory
+[child] T4 peer arrive done
+device=gfx1030 warpSize=32
+[parent] heap=0x7ee60c400000 exported handle
+[parent] T2 remote-write visibility: torn=0/4096 -> PASS
+[parent] T3 cross-process CAS: value=1 -> PASS
+[parent] T4 epoch barrier self-arrive+child-wait handled in child
+[parent] T1 ipc handle open (done in child) -> see child log
+child_rc=0 parent_rc=0 -> ALL PASS

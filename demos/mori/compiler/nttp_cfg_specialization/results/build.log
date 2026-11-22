@@ -1,0 +1,22 @@
+-- HIP: Using hipcc from relative path: /opt/rocm/bin/hipcc
+-- HIP_PLATFORM using hip_HIPCONFIG_EXECUTABLE: amd
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/zhuo/workspace/src/mori/demos/compiler/nttp_cfg_specialization/build
+ninja: no work to do.
+/home/zhuo/workspace/src/mori/demos/compiler/nttp_cfg_specialization/src/nttp_cfg_specialization.hip:177:24: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  177 |     hipEvent_t e0, e1; hipEventCreate(&e0); hipEventCreate(&e1);
+      |                        ^~~~~~~~~~~~~~~~~~~
+/home/zhuo/workspace/src/mori/demos/compiler/nttp_cfg_specialization/src/nttp_cfg_specialization.hip:177:45: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  177 |     hipEvent_t e0, e1; hipEventCreate(&e0); hipEventCreate(&e1);
+      |                                             ^~~~~~~~~~~~~~~~~~~
+/home/zhuo/workspace/src/mori/demos/compiler/nttp_cfg_specialization/src/nttp_cfg_specialization.hip:185:15: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  185 |     float ms; hipEventElapsedTime(&ms, e0, e1);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zhuo/workspace/src/mori/demos/compiler/nttp_cfg_specialization/src/nttp_cfg_specialization.hip:186:5: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  186 |     hipEventDestroy(e0); hipEventDestroy(e1);
+      |     ^~~~~~~~~~~~~~~~~~~
+/home/zhuo/workspace/src/mori/demos/compiler/nttp_cfg_specialization/src/nttp_cfg_specialization.hip:186:26: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  186 |     hipEventDestroy(e0); hipEventDestroy(e1);
+      |                          ^~~~~~~~~~~~~~~~~~~
+5 warnings generated when compiling for gfx1030.

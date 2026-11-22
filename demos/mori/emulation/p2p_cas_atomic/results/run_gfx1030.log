@@ -1,0 +1,9 @@
+device=gfx1030 warpSize=32 CU=40
+cas  fetch_add: tickets_unique=y final=262144(期望262144) -> PASS
+hw   fetch_add: tickets_unique=y final=262144(期望262144) -> PASS
+cas fold_and: got=00000000 ref=00000000 -> PASS
+cas fold_or: got=ffffffff ref=ffffffff -> PASS
+cas fold_xor: got=490c0000 ref=490c0000 -> PASS
+cas compare_swap single-winner: winners=1(期望1) final=abcd0b20 -> PASS
+contention throughput (信息性): cas=1156.548ms hw=0.014ms ratio=85291.2x slower
+ALL PASS

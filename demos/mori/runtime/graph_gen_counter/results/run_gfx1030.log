@@ -1,0 +1,4 @@
+device=gfx1030 warpSize=32
+frozen-gen host token : trapped_replays=112/200 -> TRAP OBSERVED（bug 复现）
+device-side genCounter: trapped_replays=0/200 -> PASS（mori 修法有效）
+ALL PASS

@@ -1,0 +1,8 @@
+device=gfx1030 warpSize=32
+P1 flat VA reserved: base=0x70d277c00000 span=4GB (2x2GB slots)
+P2 create+map+setAccess: SUCCESS
+P3 flat-VA slot roundtrip via device path: PASS
+P4 exported FD handle=5
+[child] device=gfx1030
+P4 child rc=0 -> PASS
+PROBE RESULT: ALL PASS (0 failed layer)

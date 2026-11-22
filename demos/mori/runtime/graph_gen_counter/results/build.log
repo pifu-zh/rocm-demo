@@ -1,0 +1,6 @@
+-- HIP: Using hipcc from relative path: /opt/rocm/bin/hipcc
+-- HIP_PLATFORM using hip_HIPCONFIG_EXECUTABLE: amd
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/zhuo/workspace/src/mori/demos/runtime/graph_gen_counter/build
+ninja: no work to do.

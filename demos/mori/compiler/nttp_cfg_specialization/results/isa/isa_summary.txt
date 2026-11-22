@@ -1,0 +1,6 @@
+列: [global_load_dwordx4, dwordx2, dword, ' slc'(NT提示), s_waitcnt, ds_*] 计数
+rt_if_version : {'global_load_dwordx4': 2, 'global_load_dwordx2': 1, 'global_load_dword\\b': 1, ' slc': 2, 's_waitcnt': 7, '\\bds_\\w+': 0}
+cfg_v16_u4_nt : {'global_load_dwordx4': 5, 'global_load_dwordx2': 0, 'global_load_dword\\b': 0, ' slc': 10, 's_waitcnt': 7, '\\bds_\\w+': 0}
+cfg_v8_u4_nt  : {'global_load_dwordx4': 0, 'global_load_dwordx2': 5, 'global_load_dword\\b': 0, ' slc': 10, 's_waitcnt': 7, '\\bds_\\w+': 0}
+cfg_v16_u1    : {'global_load_dwordx4': 2, 'global_load_dwordx2': 0, 'global_load_dword\\b': 0, ' slc': 0, 's_waitcnt': 4, '\\bds_\\w+': 0}
+cfg_v4_u2     : {'global_load_dwordx4': 0, 'global_load_dwordx2': 0, 'global_load_dword\\b': 3, ' slc': 0, 's_waitcnt': 5, '\\bds_\\w+': 0}

@@ -1,0 +1,1 @@
+protocol producer fence evidence: s_waitcnt_vscnt (system-scope fence on RDNA2)

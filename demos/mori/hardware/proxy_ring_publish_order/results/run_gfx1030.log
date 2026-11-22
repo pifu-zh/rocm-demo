@@ -1,0 +1,7 @@
+device=gfx1030 warpSize=32 CU=40
+fence(mori) protocol: 200 rounds x 4096 cmds, torn_payloads=0 (torn_rounds=0)
+racy(no fence) protocol: 200 rounds x 4096 cmds, torn_payloads=0 (torn_rounds=0)
+waiter plain-spin: host-flag->wakeup=5.0us, spin_cycles=675907 (信息性)
+waiter s_sleep: host-flag->wakeup=5.0us, spin_cycles=664749 (信息性)
+ALL PASS
+note: racy 变体撕裂=0 —— UB 在本机 PCIe 组合上的实测表现见上（不作为正确性依据）

@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.21)
+project(graph_gen_counter LANGUAGES HIP CXX)
+find_package(HIP REQUIRED)
+add_executable(graph_gen_counter src/graph_gen_counter.hip)
+target_compile_options(graph_gen_counter PRIVATE -O2 -std=c++20)

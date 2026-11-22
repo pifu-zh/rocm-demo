@@ -1,0 +1,26 @@
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/zhuo/workspace/src/mori/demos/runtime/ras_heartbeat/build
+[1/2] Building CXX object CMakeFiles/ras_heartbeat.dir/src/ras_heartbeat.cpp.o
+/home/zhuo/workspace/src/mori/demos/runtime/ras_heartbeat/src/ras_heartbeat.cpp: In function 'int main()':
+/home/zhuo/workspace/src/mori/demos/runtime/ras_heartbeat/src/ras_heartbeat.cpp:218:45: warning: format '%u' expects argument of type 'unsigned int', but argument 3 has type 'uint64_t' {aka 'long unsigned int'} [-Wformat=]
+  218 |   printf("config: heartbeat=%ums hbTimeout=%ums peerGone=%ums\n",
+      |                                            ~^
+      |                                             |
+      |                                             unsigned int
+      |                                            %lu
+  219 |          cfg.heartbeatMs, cfg.heartbeatTimeoutMs(), cfg.peerGoneMs);
+      |                           ~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                 |
+      |                                                 uint64_t {aka long unsigned int}
+/home/zhuo/workspace/src/mori/demos/runtime/ras_heartbeat/src/ras_heartbeat.cpp:218:59: warning: format '%u' expects argument of type 'unsigned int', but argument 4 has type 'uint64_t' {aka 'long unsigned int'} [-Wformat=]
+  218 |   printf("config: heartbeat=%ums hbTimeout=%ums peerGone=%ums\n",
+      |                                                          ~^
+      |                                                           |
+      |                                                           unsigned int
+      |                                                          %lu
+  219 |          cfg.heartbeatMs, cfg.heartbeatTimeoutMs(), cfg.peerGoneMs);
+      |                                                     ~~~~~~~~~~~~~~
+      |                                                         |
+      |                                                         uint64_t {aka long unsigned int}
+[2/2] Linking CXX executable ras_heartbeat
