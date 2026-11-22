@@ -1,0 +1,24 @@
+# HELP mori_rdma_throughput_gbps RDMA write throughput
+# TYPE mori_rdma_throughput_gbps gauge
+mori_rdma_throughput_gbps 42.5
+
+# HELP mori_requests_total Completed requests
+# TYPE mori_requests_total counter
+mori_requests_total 5
+
+# HELP mori_stress_total stress
+# TYPE mori_stress_total counter
+mori_stress_total 40000
+
+# HELP mori_latency_seconds End-to-end latency
+# TYPE mori_latency_seconds histogram
+mori_latency_seconds_bucket{le="0.001"} 0
+mori_latency_seconds_bucket{le="0.01"} 0
+mori_latency_seconds_bucket{le="0.1"} 1
+mori_latency_seconds_bucket{le="0.5"} 2
+mori_latency_seconds_bucket{le="1"} 3
+mori_latency_seconds_bucket{le="5"} 4
+mori_latency_seconds_bucket{le="+Inf"} 4
+mori_latency_seconds_sum 4.1200000000000001
+mori_latency_seconds_count 4
+

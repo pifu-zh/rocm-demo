@@ -1,0 +1,13 @@
+T1 mori EpLl128LandRowBytes formula edge cases             PASS
+T2 wire bytes == 1024 for 960B                             PASS
+T2 round-trip byte-exact (960B)                            PASS
+T4a flag slots (8B/line) unpolluted by pack                PASS
+T3 wire amplification (LL128 vs naive pad-128):
+     1KB data ->    2048B wire (50.00% eff) | naive=   1024B (100.00%)
+     4KB data ->    5120B wire (80.00% eff) | naive=   4096B (100.00%)
+    16KB data ->   18432B wire (88.89% eff) | naive=  16384B (100.00%)
+    64KB data ->   70656B wire (92.75% eff) | naive=  65536B (100.00%)
+   256KB data ->  280576B wire (93.43% eff) | naive= 262144B (100.00%)
+T3 wire formula consistent with mori formula at scale      PASS
+T5 fuzz round-trip 1..9300B (incl. sentinel)               PASS
+ALL PASS

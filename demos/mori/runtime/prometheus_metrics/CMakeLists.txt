@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.21)
+project(prometheus_metrics LANGUAGES CXX)
+add_executable(prometheus_metrics src/prometheus_metrics.cpp)
+target_compile_options(prometheus_metrics PRIVATE -O2 -std=c++20 -pthread)
+target_link_libraries(prometheus_metrics PRIVATE pthread)

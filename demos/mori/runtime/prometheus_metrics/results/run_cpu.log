@@ -1,0 +1,9 @@
+MetricsServer on 127.0.0.1:19091 (mori prometheus_metrics_server 复现)
+T1a gauge HELP/TYPE/value lines                          PASS
+T1b counter accumulates                                  PASS
+T2a cumulative buckets (1/2/3/4)                         PASS
+T2b +Inf bucket == count, sum=4.12                       PASS
+T4 SanitizeName non-[a-zA-Z0-9_] -> '_'                  PASS
+T5 8-thread counter stress, no lost updates              PASS
+T6 HTTP GET /metrics end-to-end                          PASS
+ALL PASS

@@ -13,7 +13,7 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 - GPU Demo 在容器 `gfx-m1`（rocm10-dev:10.1.0，ROCm 10.1.0（HIP 子系统串 7.16.26385）.26385，AMD clang 24.0）内构建运行，目标 **gfx1030**（RX 6950 XT，RDNA2，wave32）——注意 mori 官方不支持 gfx1030（构建层只认 gfx942/950/1250），本集合验证的是"提取出的机制"而非 mori 全栈。
 - 纯 CPU Demo（ras_heartbeat、io_sim_model）容器内构建，无 GPU 参与。
 
-## Demo 一览（18 个，全部 HARDWARE_PASS / REFERENCE_PASS / STATIC_ANALYSIS_PASS+HW 或更高）
+## Demo 一览（20 个，全部 HARDWARE_PASS / REFERENCE_PASS / STATIC_ANALYSIS_PASS+HW 或更高）
 
 ### algorithm/
 | Demo | 原理 | 等级 |
@@ -21,6 +21,7 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 | `dispatch_merged_reserve` | EPv1 dispatch 合并远端原子预留：O(tokens×topk) RMW → O(blocks×npes)，实测 336× 压缩 | HARDWARE_PASS |
 | `load_once_fanout` | Load-once-write-many 扇出 + v_readlane 指针广播 + 寄存器 dedup（IntraNodeLL 核心；含 shfl 收敛性陷阱实录） | HARDWARE_PASS |
 | `twoshot_ar_protocol` | twoshot AR 协议模拟（scatter→世代flag→reduce→AG）：2-rank 3 世代全过；位型整数加≠浮点加等四纪律实录 | HARDWARE_PASS |
+| `ll128_wire_format` | LL128 线缆格式数学（E-11）：120/128 行布局公式复算+pack/unpack+放大率表 | REFERENCE_PASS |
 
 ### compiler/
 | Demo | 原理 | 等级 |
@@ -51,6 +52,7 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 | `jit_content_cache` | 内容寻址 JIT 缓存全链路（Cfg→render→sha256→rename 发布→hipModule 实跑）；双进程竞态单发布者 | HARDWARE_PASS + REFERENCE_PASS |
 | `graph_gen_counter` | hipGraph 重放陷阱量化：冻结 host token 113/200 踩坑 vs 设备侧 genCounter 0/200 | HARDWARE_PASS |
 | `ras_heartbeat` | RAS 心跳/退出检测：注入 5s 偏差→算出 5.000s；LEAVE/崩溃/静默/GaveUp 四分类 | REFERENCE_PASS |
+| `prometheus_metrics` | Prometheus 指标服务（D-07）：文本格式/累积桶/8线程无丢更新/HTTP 端到端 | REFERENCE_PASS |
 | `shmem_p2p_chain` | SHMEM P2P 全链路：bootstrap→GpuStates→put+signal/get/barrier 4/4；**硬件发现: IPC alias 原子静默失效**（plain store ✓） | HARDWARE_PASS |
 
 ### 交叉验证
