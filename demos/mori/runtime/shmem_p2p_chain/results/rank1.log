@@ -1,9 +1,9 @@
 [rank1] bootstrap socket connected
-[rank1] heap=0x7e5321c00000 peer=0x7e5212c00000 (device=gfx1030)
+[rank1] heap=0x745a1ee00000 peer=0x745915000000 (device=gfx1030)
 [rank1] T1 r1: mism=0/4096 -> PASS
 [rank1] T1 r2: mism=0/4096 -> PASS
 T2 put+signal 1->0 (2 epochs): results above
-[rank1] T4a: tickets=[0..938] devCounter=0
+[rank1] T4a: tickets=[0..941] devCounter=0
 [rank1] T5 barrier r10: done=1 -> PASS
 [rank1] T5 barrier r11: done=1 -> PASS
 [rank1] RANK PASS (protocol failures=0, T4 findings=0)

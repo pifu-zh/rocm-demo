@@ -2,20 +2,5 @@
 -- HIP_PLATFORM using hip_HIPCONFIG_EXECUTABLE: amd
 -- Configuring done (0.1s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/zhuo/workspace/src/mori/demos/runtime/shmem_p2p_chain/build
-[1/2] Building HIP object CMakeFiles/shmem_p2p_chain.dir/src/shmem_p2p_chain.hip.o
-/home/zhuo/workspace/src/mori/demos/runtime/shmem_p2p_chain/src/shmem_p2p_chain.hip:370:7: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
-  370 |       hipFree(dCnt);
-      |       ^~~~~~~~~~~~~
-/home/zhuo/workspace/src/mori/demos/runtime/shmem_p2p_chain/src/shmem_p2p_chain.hip:437:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
-  437 |   hipIpcCloseMemHandle(peerHeap);
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-2 warnings generated when compiling for gfx1030.
-/home/zhuo/workspace/src/mori/demos/runtime/shmem_p2p_chain/src/shmem_p2p_chain.hip:370:7: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
-  370 |       hipFree(dCnt);
-      |       ^~~~~~~~~~~~~
-/home/zhuo/workspace/src/mori/demos/runtime/shmem_p2p_chain/src/shmem_p2p_chain.hip:437:3: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
-  437 |   hipIpcCloseMemHandle(peerHeap);
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-2 warnings generated when compiling for host.
-[2/2] Linking HIP executable shmem_p2p_chain
+-- Build files have been written to: /home/zhuo/workspace/src/rocm-demo/demos/mori/runtime/shmem_p2p_chain/build
+ninja: no work to do.

@@ -1,11 +1,11 @@
 [rank0] bootstrap socket connected
-[rank0] heap=0x70af1a600000 peer=0x70ae0fc00000 (device=gfx1030)
+[rank0] heap=0x7b2cfee00000 peer=0x7b2bf4800000 (device=gfx1030)
 T1 put+signal 0->1 (2 epochs): results above
 [rank0] T2 r3: mism=0/4096 -> PASS
 [rank0] T2 r4: mism=0/4096 -> PASS
 T3 get 0<-1: mism=0/4096 -> PASS
-T4a FINDING rank1-only CAS x1000: counter=32 old=[29793..61472768] -> NEGATIVE(原子经 alias 未正确落地)
-T4b FINDING +local x1000: counter=1939 (期望2000) -> NEGATIVE(CAS 经 alias 部分落地)
+T4a FINDING rank1-only CAS x1000: counter=30 old=[29793..61669376] -> NEGATIVE(原子经 alias 未正确落地)
+T4b FINDING +local x1000: counter=1942 (期望2000) -> NEGATIVE(CAS 经 alias 部分落地)
 T4c FINDING rank1 plain atomicAdd via alias x1000: counter=0 -> NEGATIVE(0 落地——alias 原子静默失效)
 T5 barrier (coordinator 2-phase, 2 epochs): rank1 results above
 [rank0] RANK PASS (protocol failures=0, T4 findings=3)
