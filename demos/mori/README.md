@@ -13,13 +13,14 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 - GPU Demo 在容器 `gfx-m1`（rocm10-dev:10.1.0，HIP 7.16.26385，AMD clang 24.0）内构建运行，目标 **gfx1030**（RX 6950 XT，RDNA2，wave32）——注意 mori 官方不支持 gfx1030（构建层只认 gfx942/950/1250），本集合验证的是"提取出的机制"而非 mori 全栈。
 - 纯 CPU Demo（ras_heartbeat、io_sim_model）容器内构建，无 GPU 参与。
 
-## Demo 一览（17 个，全部 HARDWARE_PASS / REFERENCE_PASS / STATIC_ANALYSIS_PASS+HW 或更高）
+## Demo 一览（18 个，全部 HARDWARE_PASS / REFERENCE_PASS / STATIC_ANALYSIS_PASS+HW 或更高）
 
 ### algorithm/
 | Demo | 原理 | 等级 |
 |---|---|---|
 | `dispatch_merged_reserve` | EPv1 dispatch 合并远端原子预留：O(tokens×topk) RMW → O(blocks×npes)，实测 336× 压缩 | HARDWARE_PASS |
 | `load_once_fanout` | Load-once-write-many 扇出 + v_readlane 指针广播 + 寄存器 dedup（IntraNodeLL 核心；含 shfl 收敛性陷阱实录） | HARDWARE_PASS |
+| `twoshot_ar_protocol` | twoshot AR 协议模拟（scatter→世代flag→reduce→AG）：2-rank 3 世代全过；位型整数加≠浮点加等四纪律实录 | HARDWARE_PASS |
 
 ### compiler/
 | Demo | 原理 | 等级 |

@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.21)
+project(twoshot_ar_protocol LANGUAGES HIP CXX)
+find_package(HIP REQUIRED)
+add_executable(twoshot_ar_protocol src/twoshot_ar_protocol.hip)
+target_compile_options(twoshot_ar_protocol PRIVATE -O2)

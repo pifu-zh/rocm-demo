@@ -139,7 +139,7 @@ buffer_load→LDS passthrough).
 ## demos/mori/ — mori Lab（上游：ROCm/mori）
 
 第二个解剖对象 **ROCm/mori**（Modular RDMA Interface，@ `c5bdc391`）的独立 Demo
-集合，17 个全部 HARDWARE_PASS / REFERENCE_PASS / STATIC_ANALYSIS_PASS+HW 或更高
+集合，18 个全部 HARDWARE_PASS / REFERENCE_PASS / STATIC_ANALYSIS_PASS+HW 或更高
 （gfx1030 + HIP 7.16 容器实测）。EP dispatch 合并原子预留（336× RMW 压缩）、structural NTTP 特化、
 ProxyRing 发布协议（RDNA2 fence = `s_waitcnt_vscnt`）、P2P CAS 原子仿真、
 IPC/VMM 双路跨进程对称内存、SDMA5 用户态队列 COPY 包执行（NT-load 一致性纪律）、
