@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.21)
+project(shmem_p2p_chain LANGUAGES HIP CXX)
+find_package(HIP REQUIRED)
+add_executable(shmem_p2p_chain src/shmem_p2p_chain.hip)
+target_compile_options(shmem_p2p_chain PRIVATE -O2 -std=c++17)

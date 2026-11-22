@@ -1,0 +1,2 @@
+  sweep: 8 split-counts, massive == serial bitwise
+mla_reduce_warp_contract: 126 checks, 0 failures -> PASS

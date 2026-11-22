@@ -13,7 +13,7 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 - GPU Demo 在容器 `gfx-m1`（rocm10-dev:10.1.0，HIP 7.16.26385，AMD clang 24.0）内构建运行，目标 **gfx1030**（RX 6950 XT，RDNA2，wave32）——注意 mori 官方不支持 gfx1030（构建层只认 gfx942/950/1250），本集合验证的是"提取出的机制"而非 mori 全栈。
 - 纯 CPU Demo（ras_heartbeat、io_sim_model）容器内构建，无 GPU 参与。
 
-## Demo 一览（15 个，全部 HARDWARE_PASS / REFERENCE_PASS 或更高）
+## Demo 一览（16 个，全部 HARDWARE_PASS / REFERENCE_PASS 或更高）
 
 ### algorithm/
 | Demo | 原理 | 等级 |
@@ -49,6 +49,7 @@ mori 技术解剖与独立复现工程（mori Lab）产出的独立 Demo。上�
 | `jit_content_cache` | 内容寻址 JIT 缓存全链路（Cfg→render→sha256→rename 发布→hipModule 实跑）；双进程竞态单发布者 | HARDWARE_PASS + REFERENCE_PASS |
 | `graph_gen_counter` | hipGraph 重放陷阱量化：冻结 host token 113/200 踩坑 vs 设备侧 genCounter 0/200 | HARDWARE_PASS |
 | `ras_heartbeat` | RAS 心跳/退出检测：注入 5s 偏差→算出 5.000s；LEAVE/崩溃/静默/GaveUp 四分类 | REFERENCE_PASS |
+| `shmem_p2p_chain` | SHMEM P2P 全链路：bootstrap→GpuStates→put+signal/get/barrier 4/4；**硬件发现: IPC alias 原子静默失效**（plain store ✓） | HARDWARE_PASS |
 
 ### 交叉验证
 `~/workspace/src/mori/demos/crossval/run_crossval.sh` + `docs/CROSSVALIDATION.md`：

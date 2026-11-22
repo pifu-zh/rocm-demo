@@ -139,13 +139,13 @@ buffer_load→LDS passthrough).
 ## demos/mori/ — mori Lab（上游：ROCm/mori）
 
 第二个解剖对象 **ROCm/mori**（Modular RDMA Interface，@ `c5bdc391`）的独立 Demo
-集合，15 个全部 HARDWARE_PASS / REFERENCE_PASS 或更高（gfx1030 + HIP 7.16 容器
+集合，16 个全部 HARDWARE_PASS / REFERENCE_PASS 或更高（gfx1030 + HIP 7.16 容器
 实测）。EP dispatch 合并原子预留（336× RMW 压缩）、structural NTTP 特化、
 ProxyRing 发布协议（RDNA2 fence = `s_waitcnt_vscnt`）、P2P CAS 原子仿真、
 IPC/VMM 双路跨进程对称内存、SDMA5 用户态队列 COPY 包执行（NT-load 一致性纪律）、
 内容寻址 JIT 缓存、hipGraph 重放陷阱量化（113/200 vs 0/200）、RAS 心跳时钟数学
 （注入 5s→算出 5.000s）、CCO LSA 端到端（peer_va 公式 + epoch barrier）、UMBP 排队
-模型、-O0/2/3 交叉验证。目录与验证等级详见
+模型、SHMEM P2P 全链路（含 IPC alias 原子静默失效的硬件发现）、-O0/2/3 交叉验证。目录与验证等级详见
 `demos/mori/README.md`；源码考古与知识地图正本在 `~/workspace/src/mori`
 （mori Lab）。
 
