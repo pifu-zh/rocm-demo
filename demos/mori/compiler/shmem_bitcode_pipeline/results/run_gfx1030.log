@@ -1,8 +1,8 @@
 === 步骤 1: hipcc --cuda-device-only -emit-llvm -fgpu-rdc -mcode-object-version=5（两 TU）===
-/home/zhuo/workspace/src/mori/demos/compiler/shmem_bitcode_pipeline/results/ir/api.bc:     LLVM IR bitcode
-/home/zhuo/workspace/src/mori/demos/compiler/shmem_bitcode_pipeline/results/ir/globals.bc: LLVM IR bitcode
+/home/zhuo/workspace/src/rocm-demo/demos/mori/compiler/shmem_bitcode_pipeline/results/ir/api.bc:     LLVM IR bitcode
+/home/zhuo/workspace/src/rocm-demo/demos/mori/compiler/shmem_bitcode_pipeline/results/ir/globals.bc: LLVM IR bitcode
 === 步骤 2: llvm-link 合并（mori: device wrapper + shmem bitcode 同款）===
-/home/zhuo/workspace/src/mori/demos/compiler/shmem_bitcode_pipeline/results/ir/linked.bc: LLVM IR bitcode
+/home/zhuo/workspace/src/rocm-demo/demos/mori/compiler/shmem_bitcode_pipeline/results/ir/linked.bc: LLVM IR bitcode
 === 步骤 3: opt -S 转可读 IR（inspection 产物）===
 llvm.lifetime 出现次数 (O2): 0
 === 步骤 3b: -O0 变体（lifetime calls 存在的形态——Triton 需要清除的原始场景）===

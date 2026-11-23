@@ -3,6 +3,6 @@ selftest: after-touch key(c1)=235f954bff6583eb97d26d7b changed=y
 selftest: restore ok (key back to 26c3736a1480edd878e177d1)
 selftest: cache-hit(no recompile)=PASS
 selftest: race two-process published=1 same-dir=y -> PASS
-  proc1: REUSED kernel.reduction_b64p8.bfbc338eaac70ecb60468e5f
-  proc2: PUBLISHED kernel.reduction_b64p8.bfbc338eaac70ecb60468e5f
+  proc1: PUBLISHED kernel.reduction_b64p8.bfbc338eaac70ecb60468e5f
+  proc2: REUSED kernel.reduction_b64p8.bfbc338eaac70ecb60468e5f
 SELFTEST PASS

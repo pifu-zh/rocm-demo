@@ -5,5 +5,5 @@ iter1 naive(per-pair atomic)   slots_used=344149 expected=344149 rmw=344149 offs
 iter1 merged(mori Phase2)      slots_used=344149 expected=344149 rmw=1024 offsets_ok=y -> PASS
 iter2 naive(per-pair atomic)   slots_used=344149 expected=344149 rmw=344149 offsets_ok=y -> PASS
 iter2 merged(mori Phase2)      slots_used=344149 expected=344149 rmw=1024 offsets_ok=y -> PASS
-timing: naive=0.254ms merged=0.020ms (信息性)
+timing: naive=0.275ms merged=0.043ms (信息性)
 ALL PASS

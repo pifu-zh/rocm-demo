@@ -1,10 +1,10 @@
 device=gfx1030 warpSize=32
-[child] device=gfx1030
 [parent] own block ready
+[child] device=gfx1030
 [child] parent ready, starting own setup
 [child] own block ready, exchanging FDs
-[child] LSA windows mapped (slot0=own B, slot1=peer A)
-[parent] LSA windows mapped (slot0=own A, slot1=peer B)
+[parent] LSA windows mapped (slot0=own A, slot1=peer B)[child] LSA windows mapped (slot0=own B, slot1=peer A)
+
 [parent] L1 LSA put to peer_va done
 [child] L1 verify (kernel reads own window): mism=0/4096 -> PASS
 [parent] L1 child-side verify: PASS

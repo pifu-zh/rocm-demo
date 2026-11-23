@@ -2,5 +2,5 @@
 -- HIP_PLATFORM using hip_HIPCONFIG_EXECUTABLE: amd
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/zhuo/workspace/src/mori/demos/runtime/jit_content_cache/build
+-- Build files have been written to: /home/zhuo/workspace/src/rocm-demo/demos/mori/runtime/jit_content_cache/build
 ninja: no work to do.

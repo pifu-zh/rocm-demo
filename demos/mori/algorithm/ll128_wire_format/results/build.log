@@ -1,5 +1,4 @@
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/zhuo/workspace/src/mori/demos/algorithm/ll128_wire_format/build
-[1/2] Building CXX object CMakeFiles/ll128_wire_format.dir/src/ll128_wire_format.cpp.o
-[2/2] Linking CXX executable ll128_wire_format
+-- Build files have been written to: /home/zhuo/workspace/src/rocm-demo/demos/mori/algorithm/ll128_wire_format/build
+ninja: no work to do.

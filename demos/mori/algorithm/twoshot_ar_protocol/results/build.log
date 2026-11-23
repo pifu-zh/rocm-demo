@@ -1,24 +1,6 @@
--- The HIP compiler identification is Clang 24.0.0
--- The CXX compiler identification is Clang 24.0.0
--- Detecting HIP compiler ABI info
--- Detecting HIP compiler ABI info - done
--- Check for working HIP compiler: /opt/rocm/core-10.1/lib/llvm/bin/clang++ - skipped
--- Detecting HIP compile features
--- Detecting HIP compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /opt/rocm/core-10.1/lib/llvm/bin/clang++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
 -- HIP: Using hipcc from relative path: /opt/rocm/bin/hipcc
 -- HIP_PLATFORM using hip_HIPCONFIG_EXECUTABLE: amd
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
--- Found Threads: TRUE  
--- Performing Test HIP_CLANG_SUPPORTS_PARALLEL_JOBS
--- Performing Test HIP_CLANG_SUPPORTS_PARALLEL_JOBS - Success
--- Configuring done (1.3s)
+-- Configuring done (0.1s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/zhuo/workspace/src/mori/demos/algorithm/twoshot_ar_protocol/build
-[1/2] Building HIP object CMakeFiles/twoshot_ar_protocol.dir/src/twoshot_ar_protocol.hip.o
-[2/2] Linking HIP executable twoshot_ar_protocol
+-- Build files have been written to: /home/zhuo/workspace/src/rocm-demo/demos/mori/algorithm/twoshot_ar_protocol/build
+ninja: no work to do.

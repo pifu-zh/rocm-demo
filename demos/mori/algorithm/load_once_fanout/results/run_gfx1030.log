@@ -1,5 +1,5 @@
 device=gfx1030 warpSize=32 CU=40
 V2 reg_dedup: tokens=8192 mismatch=0 -> PASS
 V1/V3 load-once fanout == naive byte-wise: MATCH -> PASS
-timing(信息性): naive=0.0075ms(141 GB/s eff) loadonce=0.0072ms(147 GB/s eff)
+timing(信息性): naive=0.0073ms(143 GB/s eff) loadonce=0.0070ms(150 GB/s eff)
 ALL PASS

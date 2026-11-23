@@ -1,5 +1,4 @@
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/zhuo/workspace/src/mori/demos/emulation/umbp_sim_model/build
-[1/2] Building CXX object CMakeFiles/umbp_sim_model.dir/src/test_main.cpp.o
-[2/2] Linking CXX executable umbp_sim_model
+-- Build files have been written to: /home/zhuo/workspace/src/rocm-demo/demos/mori/emulation/umbp_sim_model/build
+ninja: no work to do.

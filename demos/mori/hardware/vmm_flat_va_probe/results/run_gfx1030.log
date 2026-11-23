@@ -1,5 +1,5 @@
 device=gfx1030 warpSize=32
-P1 flat VA reserved: base=0x70d277c00000 span=4GB (2x2GB slots)
+P1 flat VA reserved: base=0x7e5d77c00000 span=4GB (2x2GB slots)
 P2 create+map+setAccess: SUCCESS
 P3 flat-VA slot roundtrip via device path: PASS
 P4 exported FD handle=5

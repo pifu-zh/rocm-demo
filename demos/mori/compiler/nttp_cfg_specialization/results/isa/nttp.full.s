@@ -1,5 +1,5 @@
 
-/home/zhuo/workspace/src/mori/demos/compiler/nttp_cfg_specialization/results/isa/gfx1030.co:	file format elf64-amdgpu
+/home/zhuo/workspace/src/rocm-demo/demos/mori/compiler/nttp_cfg_specialization/results/isa/gfx1030.co:	file format elf64-amdgpu
 	.amdgcn_target "amdgcn-amd-amdhsa-unknown-gfx1030"
 
 Disassembly of section .text:

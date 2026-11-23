@@ -1,4 +1,4 @@
-[rank1] heap=0x77ae24600000 peer=0x77ad16c00000 (device=gfx1030)
+[rank1] heap=0x793861200000 peer=0x793858400000 (device=gfx1030)
 [rank1] forensics gather[myPe][0..3]=38.50 42.00 45.50 0.50 flags=[1 0] raw=421a0000 42280000
 [rank1] kernel-saw gather=38.5 42.0 45.5 0.5 | own=45.0 0.0 3.5 7.0 | out0=45.00
 [rank1] epoch1: AR mism=0/4096 sum=392878.0 ref=196439.0 -> PASS

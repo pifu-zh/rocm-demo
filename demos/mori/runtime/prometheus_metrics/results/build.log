@@ -1,5 +1,4 @@
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/zhuo/workspace/src/mori/demos/runtime/prometheus_metrics/build
-[1/2] Building CXX object CMakeFiles/prometheus_metrics.dir/src/prometheus_metrics.cpp.o
-[2/2] Linking CXX executable prometheus_metrics
+-- Build files have been written to: /home/zhuo/workspace/src/rocm-demo/demos/mori/runtime/prometheus_metrics/build
+ninja: no work to do.

@@ -1,6 +1,6 @@
 RAS heartbeat demo (pure CPU, upstream c5bdc391 RAS 2/5 #909)
 config: heartbeat=100ms hbTimeout=300ms peerGone=2000ms
-listening on 127.0.0.1:42709
+listening on 127.0.0.1:44515
 T1 handshake+3rounds+LEAVE: roundsOk=y bLeaveOk=y -> PASS
 T2 heartbeat math: rtt=0.0000s offset=5.000s (注入5s, 期望 5±1) -> PASS
 T3 peer LEAVE: state=CLEAN_EXIT(LEAVE) -> PASS
